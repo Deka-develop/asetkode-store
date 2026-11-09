@@ -38,26 +38,26 @@ const FALLBACK_PRODUCTS = [
   },
   {
     id: 'prod-2',
-    title: 'Landing Page SaaS & Digital Agency Modern Responsive UI Template',
+    title: 'Template Landing Page UMKM & Cafe Modern Responsive (Order WhatsApp Langsung)',
     categories: ['JavaScript', 'Template', 'Source Code'],
-    price: 'Rp 79.000',
-    oldPrice: 'Rp 179.000',
-    paymentUrl: 'https://example.com/checkout/landing-page-saas',
-    demoUrl: 'https://asetkode.blogspot.com/2026/11/landing-page-saas-digital-agency-modern.html',
+    price: 'Rp 49.000',
+    oldPrice: 'Rp 99.000',
+    paymentUrl: 'https://example.com/checkout/landing-page-umkm',
+    demoUrl: 'demo/umkm/',
     postUrl: 'https://asetkode.blogspot.com/2026/11/landing-page-saas-digital-agency-modern.html',
-    version: 'v1.8 (Terbaru)',
-    stack: 'HTML5 + Tailwind CSS + Alpine.js',
+    version: 'v2.0 (Terbaru)',
+    stack: 'HTML5 + CSS3 + Vanilla JS (Zero-Config config.js)',
     license: 'Personal & Komersial (Unlimited Project)',
     openMode: 'modal',
-    demoType: 'saas',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80',
-    summary: 'Template Landing Page modern bergaya startup SaaS & Digital Agency dengan skor Google PageSpeed 99+, animasi halus, dan konversi tinggi.',
+    demoType: 'live_frame',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=900&q=80',
+    summary: 'Template Landing Page siap pakai untuk cafe, kedai kopi, resto, dan UMKM. Pesan langsung via WhatsApp dengan rincian menu otomatis, filter katalog, Google Maps, dan mode gelap.',
     features: [
-      'Skor Google Lighthouse & PageSpeed Insights 99/100',
-      '12+ Seksi Siap Pakai (Hero, Pricing Tabel, Testimoni, FAQ, CTA)',
-      'Desain Mobile-First & Dark/Light Mode Otomatis',
-      'Struktur Kode Bersih, SEO Semantic HTML5 & Mudah Dikustomisasi',
-      'Cocok untuk Web Jualan Produk Digital, Startup, & Jasa Agensi'
+      'Order Langsung via WhatsApp dengan format pesan otomatis (nama menu & harga).',
+      'Cukup edit 1 file (config.js), tanpa perlu keahlian coding sama sekali.',
+      '100% Responsif di Smartphone, Tablet, dan Laptop (Mobile-First).',
+      'Fitur Filter Kategori Menu, Animasi Counter Statistik, dan Mode Gelap/Terang.',
+      'Termasuk dokumentasi lengkap (PANDUAN.md) & lisensi komersial.'
     ]
   },
   {
@@ -163,21 +163,21 @@ const FALLBACK_PRODUCTS = [
     price: 'Rp 35.000',
     oldPrice: 'Rp 79.000',
     paymentUrl: 'https://mayar.id/pl/biolink-asetkode',
-    demoUrl: 'https://demo-biolink.example.com',
+    demoUrl: 'demo/biolink/',
     postUrl: '#',
-    version: 'v1.1 (Terbaru)',
-    stack: 'HTML5 + Tailwind CSS + Vanilla JS',
+    version: 'v2.0 (Terbaru)',
+    stack: 'HTML5 + CSS3 + Vanilla JS (Zero-Config config.js)',
     license: 'Personal & Komersial',
-    openMode: 'popup',
-    demoType: 'saas',
+    openMode: 'modal',
+    demoType: 'live_frame',
     thumbnailUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80',
-    summary: 'Template website Link-in-Bio modern dan super ringan dengan PageSpeed 100. Bebas biaya langganan bulanan selamanya, bisa di-hosting 100% gratis di GitHub Pages atau Vercel.',
+    summary: 'Template website Link-in-Bio modern dan super ringan dengan PageSpeed 100. Bebas biaya langganan bulanan selamanya ($0), bisa di-hosting 100% gratis di GitHub Pages atau Netlify.',
     features: [
-      'Skor Google PageSpeed 100 (Loading instan di bawah 0.5 detik tanpa lag).',
-      'Bebas biaya langganan bulanan (100% gratis hosting selamanya di GitHub Pages / Vercel).',
-      'Tombol klik langsung ke chat WhatsApp dengan template pesan otomatis.',
-      'Dukungan Dark Mode & Light Mode yang elegan.',
-      'Mudah diedit cukup ubah file data JSON atau HTML tanpa perlu ngoding rumit.'
+      'Bebas biaya langganan bulanan selamanya ($0 gratis hosting di GitHub Pages/Netlify).',
+      'Download Kontak Otomatis (.vcf) langsung ke buku telepon smartphone dengan 1-klik.',
+      'Showcase mini portofolio karya, tombol social media bar lengkap, dan mode gelap/terang.',
+      'Dukungan native mobile share sheet & QR code preview.',
+      'Cukup ubah 1 file config.js di Notepad tanpa perlu koding rumit.'
     ]
   },
   {
@@ -211,21 +211,22 @@ const FALLBACK_PRODUCTS = [
     price: 'Rp 45.000',
     oldPrice: 'Rp 99.000',
     paymentUrl: 'https://mayar.id/pl/undangan-digital-asetkode',
-    demoUrl: 'https://demo-undangan.example.com',
+    demoUrl: 'demo/undangan/',
     postUrl: '#',
     version: 'v2.0 (Terbaru)',
     stack: 'HTML5 + CSS3 + JavaScript (Audio Player & RSVP)',
     license: 'Personal & Komersial',
-    openMode: 'popup',
-    demoType: 'saas',
+    openMode: 'modal',
+    demoType: 'live_frame',
     thumbnailUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80',
-    summary: 'Template website undangan digital pernikahan atau event modern dengan desain aesthetic, background music, countdown timer, amplop digital QRIS, dan buku tamu RSVP.',
+    summary: 'Template website undangan digital pernikahan mewah & elegan. Dilengkapi sampul personal nama tamu, pemutar musik romantis melayang, countdown timer, amplop digital bank/QRIS, dan buku tamu RSVP WhatsApp.',
     features: [
-      'Tombol Buka Undangan dengan efek animasi tirai halus (AOS Animation).',
-      'Background Music Player dengan tombol kontrol putar/jeda melayang.',
-      'Countdown Timer hitung mundur menuju hari-H acara secara real-time.',
-      'Fitur Amplop Digital: Nomor rekening & scan QRIS dengan tombol 1-klik salin nomor.',
-      'Form RSVP ucapan & konfirmasi kehadiran buku tamu.'
+      'Cover personalisasi otomatis nama tamu via parameter link (?to=Nama+Tamu).',
+      'Tombol Buka Undangan membuka tirai halus & langsung auto-play musik romantis.',
+      'Background Music Player piringan hitam melayang dengan kontrol putar/jeda.',
+      'Countdown Timer hitung mundur hari, jam, menit, detik secara real-time.',
+      'Amplop Digital transfer bank & QRIS dengan tombol 1-klik salin nomor rekening.',
+      'Form konfirmasi kehadiran (RSVP) & ucapan selamat terhubung langsung ke WhatsApp.'
     ]
   },
   {
@@ -616,6 +617,21 @@ window.openLiveDemoById = function (productId) {
 
 function buildInteractiveDemoHTML(prod) {
   const type = prod.demoType || inferDemoType(prod.title, prod.categories);
+
+  if (type === 'live_frame' || (prod.demoUrl && prod.demoUrl.startsWith('demo/'))) {
+    return `
+      <div style="width:100%; height:620px; position:relative; background:#09090b;">
+        <div style="background:#09090b; color:#fff; padding:10px 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #27272a;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981;"></span>
+            <span style="font-size:0.8rem; font-weight:700;">LIVE PREVIEW: ${prod.title}</span>
+          </div>
+          <a href="${prod.demoUrl}" target="_blank" rel="noopener" style="background:#fff; color:#09090b; padding:4px 12px; border-radius:6px; font-size:0.75rem; font-weight:700; text-decoration:none;">Buka Layar Penuh ↗</a>
+        </div>
+        <iframe src="${prod.demoUrl}" style="width:100%; height:calc(100% - 41px); border:0; background:#fff;" allow="autoplay; clipboard-write"></iframe>
+      </div>
+    `;
+  }
 
   if (type === 'pos') {
     return `

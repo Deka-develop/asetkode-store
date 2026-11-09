@@ -1,0 +1,20 @@
+LISENSI PENGGUNAAN - Template Undangan Pernikahan Digital (AsetKode)
+=====================================================================
+
+Terima kasih telah mempercayakan kebutuhan template digital Anda kepada AsetKode.
+
+HAK PENGGUNAAN (BOLEH):
+  [v] Menggunakan template untuk acara pernikahan pribadi atau keluarga Anda.
+  [v] Menggunakan template untuk membuka jasa pembuatan undangan digital bagi klien Anda
+      (Commercial Client Projects: 1 lisensi pembelian berlaku untuk proyek tanpa batas).
+  [v] Memodifikasi tampilan CSS, HTML, JavaScript, font, musik, dan gambar sesuka Anda.
+
+PEMBATASAN LISENSI (TIDAK BOLEH):
+  [x] Menjual ulang, membagikan gratis, atau mendistribusikan ulang file template source code ini
+      ke publik sebagai produk digital mandiri.
+  [x] Mengklaim template ini sebagai karya Anda sendiri untuk diperjualbelikan di marketplace lain.
+
+DISCLAIMER:
+Produk ini disediakan "sebagaimana adanya" tanpa jaminan tersurat maupun tersirat.
+
+(c) AsetKode - https://asetkode.blogspot.com
