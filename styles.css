@@ -1393,15 +1393,117 @@ html, body {
     flex: 1;
     font-size: 16px;
   }
+  /* Sembunyikan terminal kalkulator di mobile agar katalog langsung terlihat (Above-The-Fold) */
+  .studio-card,
+  .hero-terminal {
+    display: none !important;
+  }
+
+  .bundle-card {
+    padding: 16px;
+    margin: 24px 0 28px;
+  }
+
+  /* Katalog Mobile: 2 Kolom Kompak E-Commerce */
   .product-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
   }
+
+  .product-card {
+    border-radius: 12px;
+  }
+
+  .card-window-top,
+  .card-mac-header {
+    display: none !important;
+  }
+
+  .thumb-tags {
+    display: none !important;
+  }
+
+  .card-thumb {
+    aspect-ratio: 16 / 10;
+    border-radius: 11px 11px 0 0;
+  }
+
+  .discount-pill {
+    top: 7px;
+    right: 7px;
+    padding: 3px 6px;
+    font-size: 0.62rem;
+  }
+
+  .card-body {
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .card-title {
+    font-size: 0.82rem;
+    line-height: 1.32;
+    height: 2.65em;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .card-desc {
+    display: none !important;
+  }
+
+  .stack-row {
+    display: none !important;
+  }
+
+  .card-footer {
+    padding-top: 8px;
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+    gap: 6px;
+  }
+
+  .price-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+  }
+
+  .price-val {
+    font-size: 0.95rem;
+    line-height: 1.1;
+    font-weight: 800;
+  }
+
+  .price-del {
+    font-size: 0.68rem;
+  }
+
+  .price-badge {
+    display: none !important;
+  }
+
   .card-actions {
-    grid-template-columns: 1fr 1fr;
+    display: flex !important;
+    width: 100% !important;
+    gap: 4px;
   }
+
+  .card-actions .btn-card:not(.buy) {
+    display: none !important;
+  }
+
   .card-actions .btn-card.buy {
-    grid-column: span 2;
+    width: 100% !important;
+    padding: 7px 6px !important;
+    font-size: 0.74rem !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    display: flex !important;
   }
   .bento-grid {
     margin: 22px 0 40px;
