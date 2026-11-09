@@ -699,7 +699,8 @@ html[data-theme="dark"] .theme-icon-moon {
 
 /* ================= CATALOG CONTROLS & PRODUCT CARDS ================= */
 .catalog-section {
-  padding: 28px 0 64px;
+  padding-top: 28px;
+  padding-bottom: 64px;
 }
 
 .filter-bar {
@@ -1250,24 +1251,190 @@ html[data-theme="dark"] .theme-icon-moon {
   }
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 @media (max-width: 640px) {
+  /* --- Navbar: baris 1 = logo + aksi, baris 2 = pencarian --- */
   .navbar-inner {
     flex-wrap: wrap;
     height: auto;
-    padding: 10px 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    gap: 10px;
+  }
+  .brand {
+    order: 1;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 1.1rem;
+  }
+  .brand-badge {
+    display: none;
+  }
+  .nav-actions {
+    order: 2;
+    margin-left: auto;
+    flex-shrink: 0;
   }
   .nav-search-wrap {
     order: 3;
     flex: 1 1 100%;
     max-width: 100%;
   }
+  .nav-search-input {
+    font-size: 16px; /* cegah auto-zoom iOS */
+  }
+  .icon-btn {
+    height: 40px;
+    min-width: 40px;
+    padding: 0 11px;
+  }
+  .promo-ribbon {
+    padding: 8px 12px;
+    font-size: 0.72rem;
+  }
+
+  /* --- Hero --- */
+  .hero {
+    padding: 28px 0 28px;
+  }
+  .hero-title {
+    font-size: 1.85rem;
+  }
+  .hero-desc {
+    font-size: 0.94rem;
+  }
+  .status-pill {
+    font-size: 0.72rem;
+    max-width: 100%;
+  }
+  .hero-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero-cta-row .btn {
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
   .hero-metrics {
     grid-template-columns: 1fr;
+  }
+
+  /* --- Studio / kalkulator --- */
+  .studio-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .studio-tab-group {
+    width: 100%;
+  }
+  .studio-tab {
+    flex: 1;
+    padding: 7px 4px;
+    font-size: 0.68rem;
+    white-space: nowrap;
+  }
+  .studio-content {
+    padding: 14px;
+    min-height: 0;
+  }
+  .roi-compare-grid {
+    grid-template-columns: 1fr;
+  }
+  .zip-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    word-break: break-all;
+  }
+
+  /* --- Bundle banner --- */
+  .bundle-banner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .bundle-action {
+    justify-content: space-between;
+  }
+  .bundle-banner .btn-amber {
+    width: 100%;
+    white-space: normal;
+  }
+
+  /* --- Katalog --- */
+  .filter-bar {
+    margin-left: calc(-1 * clamp(16px, 4vw, 28px));
+    margin-right: calc(-1 * clamp(16px, 4vw, 28px));
+    padding-left: clamp(16px, 4vw, 28px);
+    padding-right: clamp(16px, 4vw, 28px);
+  }
+  .toolbar-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .toolbar-row > div:last-child {
+    justify-content: space-between;
+  }
+  .sort-select {
+    flex: 1;
+    font-size: 16px;
+  }
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
   .card-actions {
     grid-template-columns: 1fr 1fr;
   }
   .card-actions .btn-card.buy {
     grid-column: span 2;
+  }
+  .bento-grid {
+    margin: 22px 0 40px;
+  }
+
+  /* --- Modal jadi bottom-sheet & drawer penuh --- */
+  .backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .modal-window {
+    max-width: 100%;
+    max-height: 94vh;
+    max-height: 94dvh;
+    border-radius: 18px 18px 0 0;
+  }
+  .modal-top {
+    padding: 12px 14px;
+  }
+  .modal-scroll {
+    padding: 16px;
+  }
+  .demo-sim-toolbar {
+    padding: 10px 12px;
+  }
+  .demo-stage-wrap {
+    padding: 10px;
+  }
+  .cart-drawer {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-title {
+    font-size: 1.6rem;
+  }
+  .brand {
+    font-size: 1rem;
+  }
+  .cart-btn span:not(.cart-count-pill) {
+    display: none;
   }
 }
