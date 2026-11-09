@@ -1,5 +1,5 @@
 /**
- * AsetKode Pro Headless Storefront (GitHub Pages × Blogger Cloud API)
+ * AsetKode Pro Headless Storefront — Pure Monochrome (Hitam Putih) Edition
  * - Auto-syncs products from https://asetkode.blogspot.com/ via JSONP (zero CORS issues)
  * - Built-in Interactive Live Demo Simulator (Desktop / Tablet / Mobile viewports)
  * - Multi-item Shopping Cart with automatic 20% Bundle Discount & VIP All-Access Pass
@@ -8,7 +8,7 @@
 
 const BLOGGER_ORIGIN = 'https://asetkode.blogspot.com';
 const STORAGE_CART_KEY = 'asetkode_pro_cart_v1';
-const STORAGE_THEME_KEY = 'asetkode_pro_theme_v1';
+const STORAGE_THEME_KEY = 'asetkode_bw_theme_v2';
 
 // Built-in fallback catalog (synced with asetkode.blogspot.com)
 const FALLBACK_PRODUCTS = [
@@ -165,19 +165,16 @@ let sortMode = 'newest';
 let cartState = [];
 let currentDemoProduct = null;
 
-// Utility: Parse numeric price from "Rp 149.000"
 function parsePriceNum(str) {
   if (!str) return 0;
   const digits = String(str).replace(/[^0-9]/g, '');
   return digits ? parseInt(digits, 10) : 0;
 }
 
-// Utility: Format integer to "Rp 149.000"
 function formatRupiah(num) {
   return 'Rp ' + Number(num || 0).toLocaleString('id-ID');
 }
 
-// Utility: Calculate discount percentage
 function getDiscountPercent(priceStr, oldPriceStr) {
   const p = parsePriceNum(priceStr);
   const old = parsePriceNum(oldPriceStr);
@@ -187,7 +184,6 @@ function getDiscountPercent(priceStr, oldPriceStr) {
   return 0;
 }
 
-// Determine interactive demo type from categories/title
 function inferDemoType(title, categories) {
   const t = (title || '').toLowerCase();
   const c = (categories || []).join(' ').toLowerCase();
@@ -212,7 +208,6 @@ window.__asetkodeBloggerCallback = function (data) {
       const altLink = (entry.link || []).find((l) => l.rel === 'alternate');
       const postUrl = altLink ? altLink.href : BLOGGER_ORIGIN;
 
-      // Parse HTML content to extract .product-meta-data attributes
       const parser = new DOMParser();
       const doc = parser.parseFromString(rawHtml, 'text/html');
       const metaEl = doc.querySelector('.product-meta-data');
@@ -294,7 +289,6 @@ function renderProductsGrid() {
   const grid = document.getElementById('productGrid');
   if (!grid) return;
 
-  // Filter by category and search query
   let list = productsState.filter((item) => {
     const matchesCat =
       activeCategory === 'all' ||
@@ -311,22 +305,20 @@ function renderProductsGrid() {
     return matchesCat && matchesSearch;
   });
 
-  // Sort
   list = [...list].sort((a, b) => {
     if (sortMode === 'price-asc') return parsePriceNum(a.price) - parsePriceNum(b.price);
     if (sortMode === 'price-desc') return parsePriceNum(b.price) - parsePriceNum(a.price);
     if (sortMode === 'disc-desc') {
       return getDiscountPercent(b.price, b.oldPrice) - getDiscountPercent(a.price, a.oldPrice);
     }
-    return 0; // newest
+    return 0;
   });
 
   if (list.length === 0) {
     grid.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align:center; padding:56px 20px; background:var(--bg-card); border:1px dashed var(--border-color); border-radius:16px;">
-        <div style="font-size:2.2rem; margin-bottom:10px;">🔍</div>
+      <div style="grid-column: 1 / -1; text-align:center; padding:56px 20px; background:var(--bg-surface); border:1px dashed var(--border-strong); border-radius:16px;">
         <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:6px;">Produk Tidak Ditemukan</h3>
-        <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:16px;">Coba gunakan kata kunci lain atau tampilkan semua kategori.</p>
+        <p style="font-size:0.86rem; color:var(--text-secondary); margin-bottom:16px;">Coba gunakan kata kunci lain atau tampilkan semua kategori.</p>
         <button type="button" class="btn btn-primary" onclick="resetCatalogFilter()">Tampilkan Semua Karya</button>
       </div>
     `;
@@ -345,7 +337,6 @@ function renderProductsGrid() {
 
       return `
         <article class="product-card" data-id="${p.id}">
-          <!-- MacOS Window Top Bar -->
           <div class="card-window-top">
             <div class="window-dots">
               <span class="win-dot r"></span>
@@ -355,7 +346,6 @@ function renderProductsGrid() {
             <span class="card-version-text">${p.version} • ZIP Ready</span>
           </div>
 
-          <!-- Thumbnail & Hover Overlay -->
           <div class="card-thumb">
             <img src="${p.thumbnailUrl}" alt="${p.title}" loading="lazy" />
             ${disc > 0 ? `<span class="discount-pill">HEMAT ${disc}%</span>` : ''}
@@ -367,25 +357,23 @@ function renderProductsGrid() {
             </div>
             <div class="card-hover-overlay">
               <button type="button" class="overlay-btn primary" onclick="openLiveDemoById('${p.id}')">
-                🖥️ Interactive Demo
+                Live Demo
               </button>
               <button type="button" class="overlay-btn" onclick="openDetailById('${p.id}')">
-                🔍 Inspect Isi .ZIP
+                Detail &amp; Isi .ZIP
               </button>
             </div>
           </div>
 
-          <!-- Body -->
           <div class="card-body">
             <h3 class="card-title" onclick="openDetailById('${p.id}')">${p.title}</h3>
             <p class="card-desc">${p.summary}</p>
 
             <div class="stack-row">
-              ${stackChips.map((st) => `<span class="stack-chip">⚙️ ${st}</span>`).join('')}
-              <span class="stack-chip">⚡ Auto-Download</span>
+              ${stackChips.map((st) => `<span class="stack-chip">${st}</span>`).join('')}
+              <span class="stack-chip">Auto-Download</span>
             </div>
 
-            <!-- 2-Row Clean Footer (Never Wraps Price or Buttons) -->
             <div class="card-footer">
               <div class="price-row">
                 <div class="price-group">
@@ -397,13 +385,13 @@ function renderProductsGrid() {
 
               <div class="card-actions">
                 <button type="button" class="btn-card" onclick="openLiveDemoById('${p.id}')" title="Coba Simulasi Live Demo">
-                  🖥️ Demo
+                  Demo
                 </button>
                 <button type="button" class="btn-card" onclick="toggleCartItemById('${p.id}')" title="Masukkan ke Keranjang">
-                  ${inCart ? '✓ Di Keranjang' : '🛒 +Keranjang'}
+                  ${inCart ? '✓ Keranjang' : '+ Keranjang'}
                 </button>
                 <button type="button" class="btn-card buy" onclick="openInstantCheckoutById('${p.id}')">
-                  ⚡ Beli Instan
+                  Beli Instan
                 </button>
               </div>
             </div>
@@ -425,7 +413,7 @@ window.resetCatalogFilter = function () {
   renderProductsGrid();
 };
 
-// ================= 3. INTERACTIVE LIVE DEMO SIMULATOR =================
+// ================= 3. INTERACTIVE LIVE DEMO SIMULATOR (MONOCHROME) =================
 window.openLiveDemoById = function (productId) {
   const prod = productsState.find((p) => p.id === productId);
   if (!prod) return;
@@ -438,7 +426,7 @@ window.openLiveDemoById = function (productId) {
 
   if (titleEl) titleEl.textContent = `Interactive Preview: ${prod.title}`;
   if (buyBtn) {
-    buyBtn.textContent = `⚡ Beli Source Code (${prod.price})`;
+    buyBtn.textContent = `Beli Source Code (${prod.price})`;
     buyBtn.onclick = () => {
       closeModal('demoSimModal');
       openInstantCheckoutById(prod.id);
@@ -463,81 +451,73 @@ function buildInteractiveDemoHTML(prod) {
 
   if (type === 'pos') {
     return `
-      <div style="font-family:'Plus Jakarta Sans',sans-serif; background:#f8fafc; min-height:540px; color:#0f172a;">
-        <div style="background:#0f172a; color:#fff; padding:14px 22px; display:flex; justify-content:space-between; align-items:center;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif; background:#fafafa; min-height:540px; color:#09090b;">
+        <div style="background:#09090b; color:#fff; padding:14px 22px; display:flex; justify-content:space-between; align-items:center;">
           <div style="display:flex; align-items:center; gap:10px;">
-            <span style="background:#3b82f6; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.8rem;">POS KASIR PRO v2.4</span>
-            <span style="font-size:0.85rem; color:#94a3b8;">Cabang Utama • Kasir: Admin Demo</span>
+            <span style="background:#ffffff; color:#09090b; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.76rem; font-family:'JetBrains Mono',monospace;">POS KASIR PRO v2.4</span>
+            <span style="font-size:0.82rem; color:#a1a1aa;">Cabang Utama • Kasir: Admin Demo</span>
           </div>
-          <span style="font-size:0.78rem; background:rgba(16,185,129,0.2); color:#34d399; padding:4px 10px; border-radius:99px; font-weight:700;">● Printer Thermal Ready</span>
+          <span style="font-size:0.74rem; background:#27272a; color:#fafafa; padding:4px 10px; border-radius:99px; font-weight:700;">● Printer Thermal Ready</span>
         </div>
 
         <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:18px; padding:20px;">
-          <!-- Katalog Kasir Interaktif -->
           <div>
             <div style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-              <strong style="font-size:0.95rem;">Klik Menu untuk Tambah ke Struk Kasir:</strong>
-              <span style="font-size:0.76rem; color:#64748b;">Simulasi Interaktif Real-Time</span>
+              <strong style="font-size:0.92rem;">Klik Menu untuk Tambah ke Struk Kasir:</strong>
+              <span style="font-size:0.74rem; color:#71717a;">Simulasi Interaktif Real-Time</span>
             </div>
-            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:12px;">
-              <button type="button" class="pos-sim-item" data-name="Kopi Susu Aren" data-price="18000" style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:12px; text-align:left; cursor:pointer; transition:0.15s;">
-                <div style="font-size:1.4rem; margin-bottom:4px;">☕</div>
-                <div style="font-weight:700; font-size:0.85rem; color:#0f172a;">Kopi Susu Aren</div>
-                <div style="color:#2563eb; font-weight:800; font-size:0.82rem; margin-top:4px;">Rp 18.000</div>
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:10px;">
+              <button type="button" class="pos-sim-item" data-name="Kopi Susu Aren" data-price="18000" style="background:#fff; border:1px solid #e4e4e7; border-radius:10px; padding:12px; text-align:left; cursor:pointer;">
+                <div style="font-weight:700; font-size:0.84rem; color:#09090b;">Kopi Susu Aren</div>
+                <div style="color:#52525b; font-weight:800; font-size:0.8rem; margin-top:4px; font-family:'JetBrains Mono',monospace;">Rp 18.000</div>
               </button>
-              <button type="button" class="pos-sim-item" data-name="Croissant Butter" data-price="24000" style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:12px; text-align:left; cursor:pointer; transition:0.15s;">
-                <div style="font-size:1.4rem; margin-bottom:4px;">🥐</div>
-                <div style="font-weight:700; font-size:0.85rem; color:#0f172a;">Croissant Butter</div>
-                <div style="color:#2563eb; font-weight:800; font-size:0.82rem; margin-top:4px;">Rp 24.000</div>
+              <button type="button" class="pos-sim-item" data-name="Croissant Butter" data-price="24000" style="background:#fff; border:1px solid #e4e4e7; border-radius:10px; padding:12px; text-align:left; cursor:pointer;">
+                <div style="font-weight:700; font-size:0.84rem; color:#09090b;">Croissant Butter</div>
+                <div style="color:#52525b; font-weight:800; font-size:0.8rem; margin-top:4px; font-family:'JetBrains Mono',monospace;">Rp 24.000</div>
               </button>
-              <button type="button" class="pos-sim-item" data-name="Matcha Latte Ice" data-price="22000" style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:12px; text-align:left; cursor:pointer; transition:0.15s;">
-                <div style="font-size:1.4rem; margin-bottom:4px;">🍵</div>
-                <div style="font-weight:700; font-size:0.85rem; color:#0f172a;">Matcha Latte Ice</div>
-                <div style="color:#2563eb; font-weight:800; font-size:0.82rem; margin-top:4px;">Rp 22.000</div>
+              <button type="button" class="pos-sim-item" data-name="Matcha Latte Ice" data-price="22000" style="background:#fff; border:1px solid #e4e4e7; border-radius:10px; padding:12px; text-align:left; cursor:pointer;">
+                <div style="font-weight:700; font-size:0.84rem; color:#09090b;">Matcha Latte Ice</div>
+                <div style="color:#52525b; font-weight:800; font-size:0.8rem; margin-top:4px; font-family:'JetBrains Mono',monospace;">Rp 22.000</div>
               </button>
-              <button type="button" class="pos-sim-item" data-name="Beef Burger Deluxe" data-price="35000" style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:12px; text-align:left; cursor:pointer; transition:0.15s;">
-                <div style="font-size:1.4rem; margin-bottom:4px;">🍔</div>
-                <div style="font-weight:700; font-size:0.85rem; color:#0f172a;">Beef Burger Deluxe</div>
-                <div style="color:#2563eb; font-weight:800; font-size:0.82rem; margin-top:4px;">Rp 35.000</div>
+              <button type="button" class="pos-sim-item" data-name="Beef Burger Deluxe" data-price="35000" style="background:#fff; border:1px solid #e4e4e7; border-radius:10px; padding:12px; text-align:left; cursor:pointer;">
+                <div style="font-weight:700; font-size:0.84rem; color:#09090b;">Beef Burger Deluxe</div>
+                <div style="color:#52525b; font-weight:800; font-size:0.8rem; margin-top:4px; font-family:'JetBrains Mono',monospace;">Rp 35.000</div>
               </button>
-              <button type="button" class="pos-sim-item" data-name="French Fries Crispy" data-price="16000" style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:12px; text-align:left; cursor:pointer; transition:0.15s;">
-                <div style="font-size:1.4rem; margin-bottom:4px;">🍟</div>
-                <div style="font-weight:700; font-size:0.85rem; color:#0f172a;">French Fries Crispy</div>
-                <div style="color:#2563eb; font-weight:800; font-size:0.82rem; margin-top:4px;">Rp 16.000</div>
+              <button type="button" class="pos-sim-item" data-name="French Fries Crispy" data-price="16000" style="background:#fff; border:1px solid #e4e4e7; border-radius:10px; padding:12px; text-align:left; cursor:pointer;">
+                <div style="font-weight:700; font-size:0.84rem; color:#09090b;">French Fries Crispy</div>
+                <div style="color:#52525b; font-weight:800; font-size:0.8rem; margin-top:4px; font-family:'JetBrains Mono',monospace;">Rp 16.000</div>
               </button>
-              <button type="button" class="pos-sim-item" data-name="Mineral Water 600ml" data-price="8000" style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:12px; text-align:left; cursor:pointer; transition:0.15s;">
-                <div style="font-size:1.4rem; margin-bottom:4px;">💧</div>
-                <div style="font-weight:700; font-size:0.85rem; color:#0f172a;">Mineral Water</div>
-                <div style="color:#2563eb; font-weight:800; font-size:0.82rem; margin-top:4px;">Rp 8.000</div>
+              <button type="button" class="pos-sim-item" data-name="Mineral Water 600ml" data-price="8000" style="background:#fff; border:1px solid #e4e4e7; border-radius:10px; padding:12px; text-align:left; cursor:pointer;">
+                <div style="font-weight:700; font-size:0.84rem; color:#09090b;">Mineral Water</div>
+                <div style="color:#52525b; font-weight:800; font-size:0.8rem; margin-top:4px; font-family:'JetBrains Mono',monospace;">Rp 8.000</div>
               </button>
             </div>
           </div>
 
-          <!-- Struk Kasir Live -->
-          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div style="background:#fff; border:1px solid #e4e4e7; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-              <div style="font-weight:800; font-size:0.92rem; padding-bottom:10px; border-bottom:1px dashed #cbd5e1; display:flex; justify-content:space-between;">
-                <span>🧾 Struk Transaksi #INV-8092</span>
-                <button type="button" id="posResetBtn" style="font-size:0.72rem; color:#ef4444; background:none; border:none; cursor:pointer; font-weight:700;">Reset</button>
+              <div style="font-weight:800; font-size:0.9rem; padding-bottom:10px; border-bottom:1px dashed #d4d4d8; display:flex; justify-content:space-between;">
+                <span>Struk Transaksi #INV-8092</span>
+                <button type="button" id="posResetBtn" style="font-size:0.72rem; color:#52525b; text-decoration:underline; background:none; border:none; cursor:pointer; font-weight:700;">Reset</button>
               </div>
               <div id="posReceiptList" style="margin:12px 0; max-height:210px; overflow-y:auto; font-size:0.82rem;">
-                <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f1f5f9;">
+                <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f4f4f5;">
                   <span>1x Kopi Susu Aren</span>
                   <strong>Rp 18.000</strong>
                 </div>
-                <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f1f5f9;">
+                <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f4f4f5;">
                   <span>1x Croissant Butter</span>
                   <strong>Rp 24.000</strong>
                 </div>
               </div>
             </div>
-            <div style="border-top:2px solid #0f172a; padding-top:12px;">
-              <div style="display:flex; justify-content:space-between; font-size:1rem; font-weight:800; margin-bottom:12px;">
+            <div style="border-top:2px solid #09090b; padding-top:12px;">
+              <div style="display:flex; justify-content:space-between; font-size:0.98rem; font-weight:800; margin-bottom:12px; font-family:'JetBrains Mono',monospace;">
                 <span>Total Tagihan:</span>
-                <span id="posTotalVal" style="color:#2563eb;">Rp 42.000</span>
+                <span id="posTotalVal">Rp 42.000</span>
               </div>
-              <button type="button" id="posPrintBtn" style="width:100%; background:#10b981; color:#fff; border:none; padding:11px; border-radius:8px; font-weight:800; cursor:pointer;">
-                🖨️ Bayar QRIS &amp; Cetak Struk Thermal
+              <button type="button" id="posPrintBtn" style="width:100%; background:#09090b; color:#fff; border:none; padding:11px; border-radius:8px; font-weight:800; cursor:pointer;">
+                Bayar QRIS &amp; Cetak Struk Thermal
               </button>
             </div>
           </div>
@@ -548,47 +528,47 @@ function buildInteractiveDemoHTML(prod) {
 
   if (type === 'dashboard' || type === 'ecom') {
     return `
-      <div style="font-family:'Plus Jakarta Sans',sans-serif; background:#0f172a; min-height:540px; color:#f8fafc; padding:22px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid #1e293b;">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif; background:#09090b; min-height:540px; color:#fafafa; padding:22px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid #27272a;">
           <div>
-            <span style="background:rgba(59,130,246,0.2); color:#60a5fa; padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:800;">LIVE INTERACTIVE DASHBOARD</span>
-            <h3 style="font-size:1.15rem; font-weight:800; margin-top:6px;">${prod.title}</h3>
+            <span style="background:#27272a; color:#fafafa; padding:4px 10px; border-radius:6px; font-size:0.72rem; font-weight:800; font-family:'JetBrains Mono',monospace;">LIVE INTERACTIVE DASHBOARD</span>
+            <h3 style="font-size:1.12rem; font-weight:800; margin-top:6px;">${prod.title}</h3>
           </div>
-          <div style="font-size:0.8rem; color:#34d399; font-weight:700;">● Real-Time Analytics Active</div>
+          <div style="font-size:0.78rem; color:#a1a1aa; font-weight:700;">● Real-Time Analytics Active</div>
         </div>
 
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:14px; margin-bottom:22px;">
-          <div style="background:#1e293b; border:1px solid #334155; padding:16px; border-radius:12px;">
-            <div style="font-size:0.75rem; color:#94a3b8;">Total Pendapatan Bulan Ini</div>
-            <div style="font-size:1.35rem; font-weight:800; color:#34d399; margin-top:4px;">Rp 48.920.000</div>
-            <div style="font-size:0.72rem; color:#34d399; margin-top:4px;">▲ +28.4% vs bulan lalu</div>
+          <div style="background:#18181b; border:1px solid #27272a; padding:16px; border-radius:12px;">
+            <div style="font-size:0.74rem; color:#a1a1aa;">Total Pendapatan Bulan Ini</div>
+            <div style="font-size:1.3rem; font-weight:800; color:#fafafa; margin-top:4px; font-family:'JetBrains Mono',monospace;">Rp 48.920.000</div>
+            <div style="font-size:0.72rem; color:#a1a1aa; margin-top:4px;">▲ +28.4% vs bulan lalu</div>
           </div>
-          <div style="background:#1e293b; border:1px solid #334155; padding:16px; border-radius:12px;">
-            <div style="font-size:0.75rem; color:#94a3b8;">Pesanan Lunas (QRIS/VA)</div>
-            <div style="font-size:1.35rem; font-weight:800; color:#60a5fa; margin-top:4px;">342 Order</div>
-            <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">Konversi Checkout 94.2%</div>
+          <div style="background:#18181b; border:1px solid #27272a; padding:16px; border-radius:12px;">
+            <div style="font-size:0.74rem; color:#a1a1aa;">Pesanan Lunas (QRIS/VA)</div>
+            <div style="font-size:1.3rem; font-weight:800; color:#fafafa; margin-top:4px; font-family:'JetBrains Mono',monospace;">342 Order</div>
+            <div style="font-size:0.72rem; color:#a1a1aa; margin-top:4px;">Konversi Checkout 94.2%</div>
           </div>
-          <div style="background:#1e293b; border:1px solid #334155; padding:16px; border-radius:12px;">
-            <div style="font-size:0.75rem; color:#94a3b8;">Pelanggan Aktif</div>
-            <div style="font-size:1.35rem; font-weight:800; color:#fbbf24; margin-top:4px;">1,284 User</div>
-            <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">Lisensi Termasuk Source Code</div>
+          <div style="background:#18181b; border:1px solid #27272a; padding:16px; border-radius:12px;">
+            <div style="font-size:0.74rem; color:#a1a1aa;">Pelanggan Aktif</div>
+            <div style="font-size:1.3rem; font-weight:800; color:#fafafa; margin-top:4px; font-family:'JetBrains Mono',monospace;">1,284 User</div>
+            <div style="font-size:0.72rem; color:#a1a1aa; margin-top:4px;">Lisensi Termasuk Source Code</div>
           </div>
         </div>
 
-        <div style="background:#1e293b; border:1px solid #334155; border-radius:12px; padding:18px;">
-          <div style="font-weight:700; font-size:0.88rem; margin-bottom:12px;">Transaksi Otomatis Terbaru</div>
-          <div style="display:grid; gap:8px; font-size:0.82rem;">
-            <div style="display:flex; justify-content:space-between; padding:10px 12px; background:#0f172a; border-radius:8px;">
+        <div style="background:#18181b; border:1px solid #27272a; border-radius:12px; padding:18px;">
+          <div style="font-weight:700; font-size:0.86rem; margin-bottom:12px;">Transaksi Otomatis Terbaru</div>
+          <div style="display:grid; gap:8px; font-size:0.8rem; font-family:'JetBrains Mono',monospace;">
+            <div style="display:flex; justify-content:space-between; padding:10px 12px; background:#09090b; border:1px solid #27272a; border-radius:8px;">
               <span>#ORD-9921 • Pembayaran QRIS Otomatis</span>
-              <span style="color:#34d399; font-weight:700;">LUNAS • Rp 169.000</span>
+              <span style="color:#fafafa; font-weight:700;">LUNAS • Rp 169.000</span>
             </div>
-            <div style="display:flex; justify-content:space-between; padding:10px 12px; background:#0f172a; border-radius:8px;">
+            <div style="display:flex; justify-content:space-between; padding:10px 12px; background:#09090b; border:1px solid #27272a; border-radius:8px;">
               <span>#ORD-9920 • Virtual Account BCA</span>
-              <span style="color:#34d399; font-weight:700;">LUNAS • Rp 149.000</span>
+              <span style="color:#fafafa; font-weight:700;">LUNAS • Rp 149.000</span>
             </div>
-            <div style="display:flex; justify-content:space-between; padding:10px 12px; background:#0f172a; border-radius:8px;">
+            <div style="display:flex; justify-content:space-between; padding:10px 12px; background:#09090b; border:1px solid #27272a; border-radius:8px;">
               <span>#ORD-9919 • E-Wallet GoPay</span>
-              <span style="color:#34d399; font-weight:700;">LUNAS • Rp 249.000</span>
+              <span style="color:#fafafa; font-weight:700;">LUNAS • Rp 249.000</span>
             </div>
           </div>
         </div>
@@ -598,16 +578,16 @@ function buildInteractiveDemoHTML(prod) {
 
   if (type === 'bot') {
     return `
-      <div style="font-family:'JetBrains Mono',monospace; background:#090d16; min-height:540px; color:#e2e8f0; padding:24px;">
-        <div style="background:#111827; border:1px solid #1f2937; border-radius:12px; padding:18px;">
-          <div style="color:#34d399; font-weight:700; margin-bottom:12px;">$ python main_automation_bot.py --mode=production</div>
-          <div style="font-size:0.82rem; line-height:1.7; color:#94a3b8;">
-            <div>[09:00:01] 🚀 Initializing <strong style="color:#fff;">${prod.title}</strong>...</div>
-            <div>[09:00:02] ✅ Loaded config.json &amp; multi-thread worker pool (8 threads)</div>
-            <div>[09:00:03] 🔍 Fetching target data &amp; running automation pipeline...</div>
-            <div style="color:#60a5fa;">[09:00:04] 📊 Processed 250 records → Exported to /output/laporan_otomatis.xlsx</div>
-            <div style="color:#34d399;">[09:00:05] 📲 Telegram Webhook Notification Sent: "Laporan Harian Selesai (250 Baris)"</div>
-            <div style="margin-top:16px; padding:12px; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); border-radius:8px; color:#34d399;">
+      <div style="font-family:'JetBrains Mono',monospace; background:#09090b; min-height:540px; color:#e4e4e7; padding:24px;">
+        <div style="background:#18181b; border:1px solid #27272a; border-radius:12px; padding:18px;">
+          <div style="color:#ffffff; font-weight:700; margin-bottom:12px;">$ python main_automation_bot.py --mode=production</div>
+          <div style="font-size:0.8rem; line-height:1.75; color:#a1a1aa;">
+            <div>[09:00:01] Initializing <strong style="color:#fff;">${prod.title}</strong>...</div>
+            <div>[09:00:02] ✓ Loaded config.json &amp; multi-thread worker pool (8 threads)</div>
+            <div>[09:00:03] ✓ Fetching target data &amp; running automation pipeline...</div>
+            <div style="color:#fafafa;">[09:00:04] → Processed 250 records → Exported to /output/laporan_otomatis.xlsx</div>
+            <div style="color:#ffffff;">[09:00:05] ✓ Telegram Webhook Notification Sent: "Laporan Harian Selesai (250 Baris)"</div>
+            <div style="margin-top:16px; padding:12px; background:#09090b; border:1px solid #3f3f46; border-radius:8px; color:#fafafa;">
               ✓ Full Source Code Python (.py) + Requirements.txt + Panduan Instalasi disertakan di dalam paket download.
             </div>
           </div>
@@ -616,18 +596,17 @@ function buildInteractiveDemoHTML(prod) {
     `;
   }
 
-  // Default: SaaS Landing Page preview
   return `
-    <div style="font-family:'Plus Jakarta Sans',sans-serif; background:linear-gradient(180deg,#0f172a,#1e293b); min-height:540px; color:#fff; padding:36px 24px; text-align:center;">
-      <span style="background:rgba(59,130,246,0.2); color:#60a5fa; padding:6px 14px; border-radius:99px; font-size:0.78rem; font-weight:800;">LIGHTHOUSE SCORE 99/100 • SAAS UI TEMPLATE</span>
-      <h2 style="font-size:2rem; font-weight:800; max-width:640px; margin:16px auto 12px; line-height:1.2;">${prod.title}</h2>
-      <p style="color:#94a3b8; max-width:540px; margin:0 auto 24px; font-size:0.95rem;">${prod.summary}</p>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif; background:#09090b; min-height:540px; color:#fff; padding:36px 24px; text-align:center;">
+      <span style="background:#27272a; color:#fafafa; padding:6px 14px; border-radius:99px; font-size:0.74rem; font-weight:800; font-family:'JetBrains Mono',monospace;">LIGHTHOUSE SCORE 99/100 • SAAS UI TEMPLATE</span>
+      <h2 style="font-size:1.95rem; font-weight:800; max-width:640px; margin:16px auto 12px; line-height:1.2;">${prod.title}</h2>
+      <p style="color:#a1a1aa; max-width:540px; margin:0 auto 24px; font-size:0.92rem;">${prod.summary}</p>
       <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:32px;">
-        <span style="background:#3b82f6; padding:10px 20px; border-radius:10px; font-weight:800; font-size:0.86rem;">⚡ Responsive Desktop, Tablet &amp; Mobile</span>
-        <span style="background:rgba(255,255,255,0.08); padding:10px 20px; border-radius:10px; font-weight:700; font-size:0.86rem;">🎨 Clean HTML5 + Tailwind CSS</span>
+        <span style="background:#ffffff; color:#09090b; padding:10px 20px; border-radius:8px; font-weight:800; font-size:0.84rem;">Responsive Desktop, Tablet &amp; Mobile</span>
+        <span style="background:#18181b; border:1px solid #27272a; padding:10px 20px; border-radius:8px; font-weight:700; font-size:0.84rem;">Clean HTML5 + Tailwind CSS</span>
       </div>
-      <div style="max-width:760px; margin:0 auto; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.15); box-shadow:0 20px 50px rgba(0,0,0,0.5);">
-        <img src="${prod.thumbnailUrl}" alt="${prod.title}" style="width:100%; max-height:320px; object-fit:cover; display:block;" />
+      <div style="max-width:760px; margin:0 auto; border-radius:14px; overflow:hidden; border:1px solid #27272a;">
+        <img src="${prod.thumbnailUrl}" alt="${prod.title}" style="width:100%; max-height:320px; object-fit:cover; display:block; filter:grayscale(100%);" />
       </div>
     </div>
   `;
@@ -647,7 +626,7 @@ function bindPosSimulatorEvents() {
       currentTotal += price;
       if (listEl) {
         const row = document.createElement('div');
-        row.style.cssText = 'display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f1f5f9;';
+        row.style.cssText = 'display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f4f4f5;';
         row.innerHTML = `<span>1x ${name}</span><strong>${formatRupiah(price)}</strong>`;
         listEl.appendChild(row);
         listEl.scrollTop = listEl.scrollHeight;
@@ -659,15 +638,14 @@ function bindPosSimulatorEvents() {
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
       currentTotal = 0;
-      if (listEl) listEl.innerHTML = '<div style="color:#94a3b8; padding:12px 0; text-align:center;">Klik item di sebelah kiri untuk simulasi transaksi kasir.</div>';
+      if (listEl) listEl.innerHTML = '<div style="color:#71717a; padding:12px 0; text-align:center;">Klik item di sebelah kiri untuk simulasi transaksi kasir.</div>';
       if (totalEl) totalEl.textContent = 'Rp 0';
     });
   }
 
   if (printBtn) {
     printBtn.addEventListener('click', () => {
-      printBtn.textContent = '✅ Struk Tercetak! Silakan Beli Source Code Ini';
-      printBtn.style.background = '#2563eb';
+      printBtn.textContent = '✓ Struk Tercetak! Silakan Beli Source Code Ini';
     });
   }
 }
@@ -687,15 +665,15 @@ window.openDetailById = function (productId) {
     bodyEl.innerHTML = `
       <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:22px; align-items:start;">
         <div>
-          <div style="border-radius:14px; overflow:hidden; border:1px solid var(--border-color); margin-bottom:16px;">
-            <img src="${prod.thumbnailUrl}" alt="${prod.title}" style="width:100%; height:230px; object-fit:cover; display:block;" />
+          <div style="border-radius:12px; overflow:hidden; border:1px solid var(--border-color); margin-bottom:16px;">
+            <img src="${prod.thumbnailUrl}" alt="${prod.title}" style="width:100%; height:230px; object-fit:cover; display:block; filter:grayscale(100%);" />
           </div>
-          <div style="background:var(--bg-elevated); border:1px solid var(--border-color); border-radius:12px; padding:14px;">
-            <div style="font-size:0.78rem; font-weight:800; color:var(--text-secondary); margin-bottom:8px;">📦 ISI PAKET UNDUHAN (.ZIP):</div>
+          <div style="background:#09090b; border:1px solid #27272a; border-radius:12px; padding:14px; color:#fafafa;">
+            <div style="font-size:0.74rem; font-weight:800; color:#a1a1aa; margin-bottom:8px; font-family:var(--font-mono);">ISI PAKET UNDUHAN (.ZIP):</div>
             <ul class="zip-tree">
-              <li class="zip-row"><span>📁 /full-source-code/ (${prod.stack})</span><span class="zip-badge">Unlocked</span></li>
-              <li class="zip-row"><span>🗄️ /database/schema_sample.sql</span><span class="zip-badge">Ready</span></li>
-              <li class="zip-row"><span>📘 PANDUAN_INSTALASI.pdf</span><span class="zip-badge">Bahasa ID</span></li>
+              <li class="zip-row"><span>/full-source-code/ (${prod.stack})</span><span class="zip-badge">Unlocked</span></li>
+              <li class="zip-row"><span>/database/schema_sample.sql</span><span class="zip-badge">Ready</span></li>
+              <li class="zip-row"><span>PANDUAN_INSTALASI.pdf</span><span class="zip-badge">Bahasa ID</span></li>
             </ul>
           </div>
         </div>
@@ -711,13 +689,13 @@ window.openDetailById = function (productId) {
           </p>
 
           <div style="margin-bottom:18px;">
-            <div style="font-size:0.82rem; font-weight:800; margin-bottom:8px;">✨ Fitur Unggulan yang Anda Dapatkan:</div>
+            <div style="font-size:0.82rem; font-weight:800; margin-bottom:8px;">Fitur Unggulan yang Anda Dapatkan:</div>
             <ul style="list-style:none; display:grid; gap:7px; font-size:0.84rem; color:var(--text-secondary);">
-              ${prod.features.map((f) => `<li>✅ ${f}</li>`).join('')}
+              ${prod.features.map((f) => `<li>✓ ${f}</li>`).join('')}
             </ul>
           </div>
 
-          <div style="background:var(--bg-elevated); border:1px solid var(--border-color); border-radius:14px; padding:16px;">
+          <div style="background:var(--bg-elevated); border:1px solid var(--border-color); border-radius:12px; padding:16px;">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
               <div>
                 <div style="font-size:0.74rem; color:var(--text-muted);">Harga Lisensi &amp; Source Code:</div>
@@ -731,10 +709,10 @@ window.openDetailById = function (productId) {
 
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
               <button type="button" class="btn btn-ghost" onclick="closeModal('detailModal'); openLiveDemoById('${prod.id}')">
-                🖥️ Live Demo
+                Live Demo
               </button>
               <button type="button" class="btn btn-primary" onclick="closeModal('detailModal'); openInstantCheckoutById('${prod.id}')">
-                ⚡ Beli &amp; Download
+                Beli &amp; Download
               </button>
             </div>
           </div>
@@ -795,7 +773,7 @@ function addAllBundleToCart() {
   cartState = [
     {
       id: 'vip-bundle-all',
-      title: '💎 VIP All-Access Developer Pass (Seluruh 6+ Source Code & Template Lengkap)',
+      title: 'VIP All-Access Developer Pass (Seluruh 6+ Source Code & Template Lengkap)',
       price: 'Rp 249.000',
       priceNum: 249000,
       stack: 'All-In-One Pack (Hemat 65%)',
@@ -813,15 +791,13 @@ function updateCartUI() {
   const totalEl = document.getElementById('cartTotalPrice');
 
   if (badge) badge.textContent = String(cartState.length);
-
   if (!listEl) return;
 
   if (cartState.length === 0) {
     listEl.innerHTML = `
       <div style="text-align:center; padding:48px 16px; color:var(--text-secondary);">
-        <div style="font-size:2.2rem; margin-bottom:8px;">🛒</div>
-        <div style="font-weight:700; margin-bottom:4px;">Keranjang Anda Masih Kosong</div>
-        <p style="font-size:0.8rem;">Pilih minimal 2 source code untuk mendapatkan <strong>Diskon Bundling 20% Otomatis</strong>!</p>
+        <div style="font-weight:800; font-size:0.95rem; margin-bottom:4px; color:var(--text-primary);">Keranjang Anda Masih Kosong</div>
+        <p style="font-size:0.8rem;">Pilih minimal 2 source code untuk mendapatkan <strong>Diskon Bundling 20% Otomatis</strong>.</p>
       </div>
     `;
     if (hintEl) hintEl.textContent = '';
@@ -850,11 +826,11 @@ function updateCartUI() {
 
   if (hintEl) {
     if (hasBundleDiscount) {
-      hintEl.textContent = `🎉 Diskon Bundling 20% Aktif! (Hemat ${formatRupiah(rawTotal - finalTotal)})`;
+      hintEl.textContent = `✓ Diskon Bundling 20% Aktif (Hemat ${formatRupiah(rawTotal - finalTotal)})`;
     } else if (cartState.some((i) => i.id === 'vip-bundle-all')) {
-      hintEl.textContent = '💎 Paket VIP All-Access Aktif (Hemat Rp 455.000 dari harga satuan!)';
+      hintEl.textContent = '✓ Paket VIP All-Access Aktif (Hemat Rp 455.000 dari harga satuan)';
     } else {
-      hintEl.textContent = '💡 Tips: Tambah 1 produk lagi untuk ekstra diskon bundling 20% otomatis!';
+      hintEl.textContent = 'Tips: Tambah 1 produk lagi untuk ekstra diskon bundling 20% otomatis.';
     }
   }
 
@@ -866,7 +842,7 @@ function openCartDrawer() {
   if (backdrop) backdrop.classList.add('open');
 }
 
-// ================= 6. INSTANT CHECKOUT MODAL & QRIS GATEWAY SIMULATOR =================
+// ================= 6. INSTANT CHECKOUT MODAL & MONOCHROME QRIS GATEWAY =================
 window.openInstantCheckoutById = function (productId) {
   const prod = productsState.find((p) => p.id === productId);
   if (!prod) return;
@@ -885,11 +861,10 @@ function launchCheckoutGateway(order) {
   const iframe = document.getElementById('checkoutIframe');
   const extLink = document.getElementById('checkoutExternalLink');
 
-  if (titleEl) titleEl.textContent = `🔒 Checkout Instan: ${order.title}`;
+  if (titleEl) titleEl.textContent = `Checkout Instan: ${order.title}`;
   if (priceEl) priceEl.textContent = order.price;
   if (extLink) extLink.href = order.paymentUrl || '#';
 
-  // If paymentUrl is still placeholder example.com, render interactive built-in QRIS / VA Payment Gateway Preview inside iframe srcdoc
   const isPlaceholder = !order.paymentUrl || order.paymentUrl.includes('example.com');
   if (iframe) {
     if (isPlaceholder) {
@@ -911,26 +886,28 @@ function buildBuiltInPaymentGatewayHTML(order) {
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
       <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: #f8fafc; color: #0f172a; padding: 22px; }
-        .card { max-width: 540px; margin: 0 auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px; box-shadow: 0 10px 25px rgba(15,23,42,0.06); }
-        .badge { display: inline-block; background: #dbeafe; color: #1d4ed8; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 99px; margin-bottom: 8px; }
+        body { background: #fafafa; color: #09090b; padding: 22px; }
+        .card { max-width: 540px; margin: 0 auto; background: #fff; border: 1px solid #e4e4e7; border-radius: 14px; padding: 22px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
+        .badge { display: inline-block; background: #09090b; color: #ffffff; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 99px; margin-bottom: 10px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
         .title { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
-        .price { font-size: 22px; font-weight: 800; color: #2563eb; margin-bottom: 16px; }
-        label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 6px; }
-        input { width: 100%; padding: 11px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; margin-bottom: 14px; }
+        .price { font-size: 22px; font-weight: 800; color: #09090b; margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; }
+        label { display: block; font-size: 12px; font-weight: 700; color: #52525b; margin-bottom: 6px; }
+        input { width: 100%; padding: 11px 14px; border: 1px solid #d4d4d8; border-radius: 8px; font-size: 14px; margin-bottom: 14px; outline: none; }
+        input:focus { border-color: #09090b; }
         .methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
-        .method { border: 2px solid #e2e8f0; border-radius: 10px; padding: 10px; text-align: center; cursor: pointer; font-size: 12px; font-weight: 700; }
-        .method.active { border-color: #2563eb; background: #eff6ff; color: #1d4ed8; }
-        .btn { width: 100%; background: linear-gradient(135deg, #2563eb, #4f46e5); color: #fff; border: none; padding: 13px; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; }
-        .success-box { display: none; margin-top: 16px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 12px; padding: 16px; text-align: center; }
+        .method { border: 1.5px solid #e4e4e7; border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; font-size: 12px; font-weight: 700; color: #52525b; }
+        .method.active { border-color: #09090b; background: #09090b; color: #ffffff; }
+        .btn { width: 100%; background: #09090b; color: #fff; border: none; padding: 13px; border-radius: 8px; font-size: 14px; font-weight: 800; cursor: pointer; }
+        .btn:hover { opacity: 0.9; }
+        .success-box { display: none; margin-top: 16px; background: #f4f4f5; border: 1px solid #09090b; border-radius: 10px; padding: 16px; text-align: center; }
       </style>
     </head>
     <body>
       <div class="card">
-        <span class="badge">⚡ GATEWAY PEMBAYARAN OTOMATIS 24/7</span>
+        <span class="badge">GATEWAY PEMBAYARAN OTOMATIS 24/7</span>
         <div class="title">${order.title}</div>
         <div class="price">${order.price}</div>
 
@@ -939,17 +916,17 @@ function buildBuiltInPaymentGatewayHTML(order) {
 
         <label>Pilih Metode Pembayaran Instan:</label>
         <div class="methods">
-          <div class="method active" onclick="selectM(this)">📲 QRIS Instan</div>
-          <div class="method" onclick="selectM(this)">🏦 Virtual Account</div>
-          <div class="method" onclick="selectM(this)">💳 GoPay / DANA</div>
+          <div class="method active" onclick="selectM(this)">QRIS Instan</div>
+          <div class="method" onclick="selectM(this)">Virtual Account</div>
+          <div class="method" onclick="selectM(this)">GoPay / DANA</div>
         </div>
 
-        <button type="button" class="btn" onclick="simulatePay()">🔒 Buat Kode QRIS &amp; Unduh Source Code</button>
+        <button type="button" class="btn" onclick="simulatePay()">Buat Kode QRIS &amp; Unduh Source Code</button>
 
         <div class="success-box" id="simSuccess">
-          <div style="font-size:15px; font-weight:800; color:#047857; margin-bottom:6px;">✅ Kode Pembayaran Siap!</div>
-          <p style="font-size:12.5px; color:#065f46; line-height:1.5;">
-            Begitu Anda menghubungkan link produk <strong>Mayar.id / Lynk.id / Tripay</strong> pada atribut <code>data-payment-url</code> di Bot Auto-Post, jendela ini otomatis menampilkan QRIS asli dan mengirimkan file <code>.ZIP</code> ke email pembeli detik itu juga!
+          <div style="font-size:14px; font-weight:800; color:#09090b; margin-bottom:6px;">✓ Kode Pembayaran Siap</div>
+          <p style="font-size:12.5px; color:#52525b; line-height:1.5;">
+            Begitu Anda menghubungkan link produk <strong>Mayar.id / Lynk.id / Tripay</strong> pada atribut <code>data-payment-url</code> di Bot Auto-Post, jendela ini otomatis menampilkan QRIS asli dan mengirimkan file <code>.ZIP</code> ke email pembeli detik itu juga.
           </p>
         </div>
       </div>
@@ -971,32 +948,31 @@ function buildBuiltInPaymentGatewayHTML(order) {
 const ROI_DATA = {
   pos: {
     customCost: 'Rp 4.500.000',
-    customTime: '⏳ Waktu: 28 Hari Kerja',
+    customTime: 'Waktu: 28 Hari Kerja',
     asetPrice: 'Rp 149.000',
     savingsText: 'Anda Hemat Rp 4.351.000 (96%) & 28 Hari Coding!'
   },
   ecom: {
     customCost: 'Rp 5.800.000',
-    customTime: '⏳ Waktu: 35 Hari Kerja',
+    customTime: 'Waktu: 35 Hari Kerja',
     asetPrice: 'Rp 169.000',
     savingsText: 'Anda Hemat Rp 5.631.000 (97%) & 35 Hari Coding!'
   },
   saas: {
     customCost: 'Rp 2.200.000',
-    customTime: '⏳ Waktu: 14 Hari Kerja',
+    customTime: 'Waktu: 14 Hari Kerja',
     asetPrice: 'Rp 79.000',
     savingsText: 'Anda Hemat Rp 2.121.000 (96%) & 14 Hari Coding!'
   },
   bot: {
     customCost: 'Rp 3.000.000',
-    customTime: '⏳ Waktu: 18 Hari Kerja',
+    customTime: 'Waktu: 18 Hari Kerja',
     asetPrice: 'Rp 99.000',
     savingsText: 'Anda Hemat Rp 2.901.000 (96%) & 18 Hari Coding!'
   }
 };
 
 function initHeroStudioAndROI() {
-  // Studio tabs
   document.querySelectorAll('.studio-tab').forEach((tab) => {
     tab.addEventListener('click', () => {
       const target = tab.getAttribute('data-tab');
@@ -1008,7 +984,6 @@ function initHeroStudioAndROI() {
     });
   });
 
-  // ROI Calculator select
   const roiSelect = document.getElementById('roiProjectSelect');
   if (roiSelect) {
     roiSelect.addEventListener('change', () => {
@@ -1035,18 +1010,18 @@ window.closeModal = function (id) {
 };
 
 function initThemeToggle() {
-  const saved = localStorage.getItem(STORAGE_THEME_KEY) || 'dark';
+  const saved = localStorage.getItem(STORAGE_THEME_KEY) || 'light';
   document.documentElement.setAttribute('data-theme', saved);
   const btn = document.getElementById('themeBtn');
-  if (btn) btn.textContent = saved === 'dark' ? '☀️ Light' : '🌙 Dark';
+  if (btn) btn.textContent = saved === 'dark' ? '○ Mode Putih' : '● Mode Hitam';
 
   if (btn) {
     btn.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem(STORAGE_THEME_KEY, next);
-      btn.textContent = next === 'dark' ? '☀️ Light' : '🌙 Dark';
+      btn.textContent = next === 'dark' ? '○ Mode Putih' : '● Mode Hitam';
     });
   }
 }
@@ -1058,7 +1033,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProductsGrid();
   syncFromBloggerCloud();
 
-  // Category chips
   document.querySelectorAll('#filterBar .filter-chip').forEach((chip) => {
     chip.addEventListener('click', () => {
       document.querySelectorAll('#filterBar .filter-chip').forEach((c) => c.classList.remove('active'));
@@ -1068,7 +1042,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Search input
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -1077,7 +1050,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Sort select
   const sortSelect = document.getElementById('sortSelect');
   if (sortSelect) {
     sortSelect.addEventListener('change', (e) => {
@@ -1086,7 +1058,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Viewport switcher inside Live Demo Simulator
   document.querySelectorAll('.vp-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.vp-btn').forEach((b) => b.classList.remove('active'));
@@ -1097,11 +1068,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Bundle button
   const addBundleBtn = document.getElementById('addBundleBtn');
   if (addBundleBtn) addBundleBtn.addEventListener('click', addAllBundleToCart);
 
-  // Cart drawer buttons
   const openCartBtn = document.getElementById('openCartBtn');
   if (openCartBtn) openCartBtn.addEventListener('click', openCartDrawer);
 
@@ -1127,7 +1096,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Close modal buttons
   const closeDemoSimBtn = document.getElementById('closeDemoSimBtn');
   if (closeDemoSimBtn) closeDemoSimBtn.addEventListener('click', () => closeModal('demoSimModal'));
 
@@ -1137,11 +1105,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeCheckoutBtn = document.getElementById('closeCheckoutBtn');
   if (closeCheckoutBtn) closeCheckoutBtn.addEventListener('click', () => closeModal('checkoutModal'));
 
-  // Escape key to close any open modal
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       ['demoSimModal', 'detailModal', 'cartBackdrop', 'checkoutModal'].forEach(closeModal);
     }
   });
 });
-
