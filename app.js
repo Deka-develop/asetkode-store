@@ -1013,7 +1013,7 @@ function initThemeToggle() {
   const saved = localStorage.getItem(STORAGE_THEME_KEY) || 'light';
   document.documentElement.setAttribute('data-theme', saved);
   const btn = document.getElementById('themeBtn');
-  if (btn) btn.textContent = saved === 'dark' ? '○ Mode Putih' : '● Mode Hitam';
+  if (btn) btn.setAttribute('title', saved === 'dark' ? 'Ganti ke Mode Terang' : 'Ganti ke Mode Gelap');
 
   if (btn) {
     btn.addEventListener('click', () => {
@@ -1021,7 +1021,7 @@ function initThemeToggle() {
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem(STORAGE_THEME_KEY, next);
-      btn.textContent = next === 'dark' ? '○ Mode Putih' : '● Mode Hitam';
+      btn.setAttribute('title', next === 'dark' ? 'Ganti ke Mode Terang' : 'Ganti ke Mode Gelap');
     });
   }
 }

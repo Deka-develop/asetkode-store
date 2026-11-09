@@ -267,6 +267,38 @@ button, input, select {
   background: var(--bg-elevated);
 }
 
+.theme-icon-sun,
+.theme-icon-moon {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-icon-sun {
+  display: none;
+}
+
+.theme-icon-moon {
+  display: block;
+}
+
+html[data-theme="dark"] .theme-icon-sun {
+  display: block;
+}
+
+html[data-theme="dark"] .theme-icon-moon {
+  display: none;
+}
+
+#themeBtn:hover .theme-icon-moon {
+  transform: rotate(-15deg);
+}
+
+#themeBtn:hover .theme-icon-sun {
+  transform: rotate(45deg);
+}
+
 .cart-btn {
   background: var(--accent);
   border-color: var(--accent);
