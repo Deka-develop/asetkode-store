@@ -193,8 +193,8 @@ button, input, select {
 }
 
 .nav-search-wrap {
-  flex: 1;
-  max-width: 380px;
+  flex: 0 1 280px;
+  max-width: 280px;
   position: relative;
 }
 
@@ -233,6 +233,7 @@ button, input, select {
   font-size: 0.86rem;
   font-weight: 600;
   color: var(--text-secondary);
+  margin-left: auto;
 }
 
 .nav-menu a:hover {
@@ -910,6 +911,11 @@ html[data-theme="dark"] .theme-icon-moon {
   margin-bottom: 8px;
   cursor: pointer;
   letter-spacing: -0.02em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.7em;
 }
 
 .card-title:hover {
@@ -920,11 +926,12 @@ html[data-theme="dark"] .theme-icon-moon {
   font-size: 0.84rem;
   color: var(--text-secondary);
   margin-bottom: 14px;
+  line-height: 1.45;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  flex: 1;
+  height: 2.9em;
 }
 
 .stack-row {
@@ -947,6 +954,7 @@ html[data-theme="dark"] .theme-icon-moon {
 
 /* 2-Row Clean Card Footer (Never Wraps Price or Buttons) */
 .card-footer {
+  margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid var(--border-color);
   display: flex;
