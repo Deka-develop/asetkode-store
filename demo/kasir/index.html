@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS & Gudang — Sistem Kasir & Inventaris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-shell no-print">
+        <!-- Top Navigation & System Bar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="store-identity">
+                    <div class="store-mark">POS</div>
+                    <div class="store-meta">
+                        <strong id="sidebarStoreName">TOKO BERKAH MANDIRI</strong>
+                        <span class="register-tag mono">REG-01 · AKTIF</span>
+                    </div>
+                </div>
+
+                <nav class="main-nav">
+                    <button class="nav-tab active" data-tab="pos" onclick="App.switchTab('pos')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        <span>Kasir</span>
+                        <kbd>F1</kbd>
+                    </button>
+                    <button class="nav-tab" data-tab="inventory" onclick="App.switchTab('inventory')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                        <span>Inventaris</span>
+                        <span class="nav-counter hidden" id="lowStockBadge">0</span>
+                    </button>
+                    <button class="nav-tab" data-tab="mutations" onclick="App.switchTab('mutations')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                        <span>Kartu Stok</span>
+                    </button>
+                    <button class="nav-tab" data-tab="transactions" onclick="App.switchTab('transactions')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        <span>Jurnal Nota</span>
+                    </button>
+                    <button class="nav-tab" data-tab="dashboard" onclick="App.switchTab('dashboard')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        <span>Laba / Rugi</span>
+                    </button>
+                    <button class="nav-tab" data-tab="excel" onclick="App.switchTab('excel')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                        <span>Database Excel</span>
+                    </button>
+                    <button class="nav-tab" data-tab="settings" onclick="App.switchTab('settings')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <div class="excel-status-pill" id="excelStatusCard">
+                    <span class="status-dot" id="excelStatusDot"></span>
+                    <span class="status-label" id="excelStatusText">LOKAL</span>
+                    <span class="status-filename mono" id="excelFileName">Browser Storage</span>
+                    <div class="pill-divider"></div>
+                    <button class="pill-action" onclick="ExcelManager.connectLocalExcel()" title="Tautkan file .xlsx lokal agar tersimpan otomatis">
+                        Tautkan .xlsx
+                    </button>
+                    <button class="pill-action" onclick="ExcelManager.exportFullWorkbook()" title="Unduh salinan lengkap .xlsx">
+                        Unduh
+                    </button>
+                </div>
+
+                <div class="clock-pill mono">
+                    <span id="liveDate">01/11/2026</span>
+                    <strong id="liveClock">00:00:00</strong>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <!-- ==================== TAB 1: MESIN KASIR (POS) ==================== -->
+            <section id="tab-pos" class="view-pane active">
+                <div class="pos-workbench">
+                    <!-- Left: Product Catalog & Scanner Bar -->
+                    <div class="pos-left">
+                        <div class="catalog-header">
+                            <div class="lookup-bar">
+                                <div class="search-input-wrap">
+                                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                    <input type="text" id="posSearchInput" placeholder="Cari barang, ketik SKU, atau scan barcode..." autocomplete="off">
+                                    <kbd class="kbd-hint">F2</kbd>
+                                </div>
+
+                                <div class="control-group">
+                                    <span class="group-label">HARGA</span>
+                                    <div class="segmented">
+                                        <button class="seg-btn active" id="modeRetailBtn" onclick="App.setPriceMode('retail')">Eceran</button>
+                                        <button class="seg-btn" id="modeWholesaleBtn" onclick="App.setPriceMode('wholesale')">Grosir</button>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <div class="segmented">
+                                        <button class="seg-btn active" id="viewGridBtn" onclick="App.setCatalogView('grid')" title="Tampilan Grid">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                        </button>
+                                        <button class="seg-btn" id="viewTableBtn" onclick="App.setCatalogView('table')" title="Tampilan Tabel">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="category-strip" id="posCategoryPills"></div>
+                        </div>
+
+                        <div class="catalog-body" id="posCatalogContainer">
+                            <div class="product-grid" id="posProductGrid"></div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Register Ticket & Checkout Dock -->
+                    <div class="pos-right">
+                        <div class="ticket-top">
+                            <div class="ticket-id-group">
+                                <span class="micro-label">NOMOR NOTA</span>
+                                <strong class="mono invoice-badge" id="cartInvoicePreview">INV-20261101-001</strong>
+                            </div>
+                            <div class="ticket-customer-group">
+                                <input type="text" id="cartCustomerName" placeholder="Pelanggan Umum" class="input-customer">
+                                <button class="btn-ghost-danger" onclick="App.clearCart()" title="Kosongkan Nota">
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="ticket-table-head">
+                            <span>RINCIAN BARANG</span>
+                            <span class="text-center">KUANTITAS</span>
+                            <span class="text-right">SUBTOTAL</span>
+                            <span></span>
+                        </div>
+
+                        <div class="ticket-items-scroll" id="cartItemsContainer"></div>
+
+                        <!-- Bottom Checkout & Tender Dock -->
+                        <div class="checkout-dock">
+                            <div class="summary-breakdown">
+                                <div class="breakdown-row">
+                                    <span>Subtotal (<strong id="cartTotalQty" class="mono">0</strong> unit)</span>
+                                    <span class="mono" id="cartSubtotalDisplay">Rp 0</span>
+                                </div>
+                                <div class="breakdown-row">
+                                    <span>Potongan Diskon (Rp)</span>
+                                    <input type="number" id="cartDiscountInput" value="0" min="0" step="500" class="input-discount mono" oninput="App.updateCheckoutCalculations()">
+                                </div>
+                                <div class="breakdown-row">
+                                    <label class="tax-toggle">
+                                        <input type="checkbox" id="cartTaxCheckbox" onchange="App.updateCheckoutCalculations()">
+                                        <span>Pajak PPN (<span id="taxRateLabel">11</span>%)</span>
+                                    </label>
+                                    <span class="mono" id="cartTaxDisplay">Rp 0</span>
+                                </div>
+                            </div>
+
+                            <!-- Grand Total Display -->
+                            <div class="grand-total-box">
+                                <div class="gt-left">
+                                    <span class="gt-label">TOTAL TAGIHAN</span>
+                                    <span class="gt-mode" id="gtPriceModeIndicator">Harga Eceran</span>
+                                </div>
+                                <div class="gt-amount mono" id="cartGrandTotalDisplay">Rp 0</div>
+                            </div>
+
+                            <!-- Payment Method Selector (1-Tap Tiles) -->
+                            <div class="payment-method-strip">
+                                <input type="hidden" id="cartPaymentMethod" value="Tunai">
+                                <button type="button" class="pm-tile active" data-method="Tunai" onclick="App.selectPaymentMethod('Tunai')">
+                                    <span>Tunai</span>
+                                </button>
+                                <button type="button" class="pm-tile" data-method="QRIS" onclick="App.selectPaymentMethod('QRIS')">
+                                    <span>QRIS</span>
+                                </button>
+                                <button type="button" class="pm-tile" data-method="Transfer" onclick="App.selectPaymentMethod('Transfer')">
+                                    <span>Transfer</span>
+                                </button>
+                                <button type="button" class="pm-tile" data-method="Debit" onclick="App.selectPaymentMethod('Debit')">
+                                    <span>Debit</span>
+                                </button>
+                                <button type="button" class="pm-tile" data-method="Kasbon" onclick="App.selectPaymentMethod('Kasbon')">
+                                    <span>Kasbon</span>
+                                </button>
+                            </div>
+
+                            <!-- Cash Tender & Quick Nominals -->
+                            <div class="tender-controls">
+                                <div class="tender-input-group">
+                                    <div class="tender-col">
+                                        <label for="cartCashReceived">UANG DITERIMA</label>
+                                        <input type="number" id="cartCashReceived" placeholder="0" min="0" step="1000" class="input-cash-tender mono" oninput="App.updateCheckoutCalculations()">
+                                    </div>
+                                    <div class="tender-col change-box change-row">
+                                        <label id="changeLabel">KEMBALIAN</label>
+                                        <strong class="mono change-amount" id="cartChangeDisplay">Rp 0</strong>
+                                    </div>
+                                </div>
+
+                                <div class="quick-cash-grid">
+                                    <button type="button" onclick="App.setQuickCash('exact')">Uang Pas</button>
+                                    <button type="button" onclick="App.setQuickCash(20000)">20.000</button>
+                                    <button type="button" onclick="App.setQuickCash(50000)">50.000</button>
+                                    <button type="button" onclick="App.setQuickCash(100000)">100.000</button>
+                                </div>
+
+                                <button class="btn-pay-primary" id="btnProcessCheckout" onclick="App.processCheckout()">
+                                    <span>Proses Pembayaran & Cetak Struk</span>
+                                    <kbd>F4</kbd>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== TAB 2: INVENTARIS GUDANG ==================== -->
+            <section id="tab-inventory" class="view-pane">
+                <div class="page-head">
+                    <div>
+                        <h2>Inventaris & Master Barang Gudang</h2>
+                        <p class="page-sub">Kelola daftar SKU, harga pokok (HPP), harga eceran/grosir, lokasi rak, dan batas stok minimum.</p>
+                    </div>
+                    <div class="head-actions">
+                        <button class="btn" onclick="ExcelManager.exportInventorySheet()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Export Stok (.xlsx)
+                        </button>
+                        <label class="btn" for="quickImportInventoryInput" style="cursor:pointer;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Import (.xlsx)
+                            <input type="file" id="quickImportInventoryInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="ExcelManager.importInventoryFromFile(event)">
+                        </label>
+                        <button class="btn btn-primary" onclick="App.openProductModal()">+ Tambah Barang</button>
+                    </div>
+                </div>
+
+                <div class="metric-ribbon">
+                    <div class="metric-item">
+                        <span class="metric-label">TOTAL SKU TERDAFTAR</span>
+                        <strong class="metric-val mono" id="invTotalSku">0</strong>
+                        <span class="metric-note" id="invTotalUnitText">0 unit fisik di gudang</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">NILAI ASET MODAL (HPP)</span>
+                        <strong class="metric-val mono" id="invTotalAssetCost">Rp 0</strong>
+                        <span class="metric-note">Total modal stok tersimpan</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">ESTIMASI NILAI JUAL</span>
+                        <strong class="metric-val mono" id="invTotalRetailValue">Rp 0</strong>
+                        <span class="metric-note" id="invPotentialProfitText">Margin potensial Rp 0</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">PERINGATAN RESTOCK</span>
+                        <strong class="metric-val mono text-warn" id="invLowStockCount">0</strong>
+                        <span class="metric-note">Item di bawah stok minimum</span>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-toolbar">
+                        <div class="search-input-wrap flex-1">
+                            <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="invSearchInput" placeholder="Filter berdasarkan SKU, nama barang, rak, atau supplier..." oninput="App.renderInventoryTable()">
+                        </div>
+                        <select id="invCategoryFilter" class="select-control" onchange="App.renderInventoryTable()">
+                            <option value="ALL">Semua Kategori</option>
+                        </select>
+                        <select id="invStockFilter" class="select-control" onchange="App.renderInventoryTable()">
+                            <option value="ALL">Semua Status Stok</option>
+                            <option value="LOW">Stok Menipis / Habis</option>
+                            <option value="OUT">Stok Habis (0)</option>
+                            <option value="SAFE">Stok Aman</option>
+                        </select>
+                    </div>
+
+                    <div class="table-scroll">
+                        <table class="data-grid">
+                            <thead>
+                                <tr>
+                                    <th style="width:125px">KODE SKU</th>
+                                    <th>NAMA BARANG</th>
+                                    <th>KATEGORI</th>
+                                    <th>LOKASI RAK</th>
+                                    <th class="text-right">HPP (MODAL)</th>
+                                    <th class="text-right">HRG ECERAN</th>
+                                    <th class="text-right">HRG GROSIR</th>
+                                    <th class="text-right">STOK FISIK</th>
+                                    <th class="text-center">STATUS</th>
+                                    <th class="text-right" style="width:195px">AKSI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== TAB 3: KARTU STOK (MUTATIONS) ==================== -->
+            <section id="tab-mutations" class="view-pane">
+                <div class="page-head">
+                    <div>
+                        <h2>Kartu Stok & Log Mutasi Gudang</h2>
+                        <p class="page-sub">Catatan kronologis keluar-masuk barang, restock pemasok, barang rusak, dan koreksi Stock Opname.</p>
+                    </div>
+                    <div class="head-actions">
+                        <button class="btn" onclick="ExcelManager.exportMutationsSheet()">Export Kartu Stok (.xlsx)</button>
+                        <button class="btn btn-primary" onclick="App.openMutationModal()">+ Catat Mutasi Stok</button>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-toolbar">
+                        <div class="search-input-wrap flex-1">
+                            <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="mutSearchInput" placeholder="Cari SKU, nama barang, nomor referensi, atau keterangan..." oninput="App.renderMutationsTable()">
+                        </div>
+                        <select id="mutTypeFilter" class="select-control" onchange="App.renderMutationsTable()">
+                            <option value="ALL">Semua Jenis Mutasi</option>
+                            <option value="IN">Stok Masuk (+ Pembelian / Restock)</option>
+                            <option value="OUT">Stok Keluar (- Penjualan / Rusak)</option>
+                            <option value="OPNAME">Stock Opname (Penyesuaian Fisik)</option>
+                        </select>
+                    </div>
+
+                    <div class="table-scroll">
+                        <table class="data-grid">
+                            <thead>
+                                <tr>
+                                    <th style="width:150px">TANGGAL & JAM</th>
+                                    <th style="width:125px">KODE SKU</th>
+                                    <th>NAMA BARANG</th>
+                                    <th style="width:135px">TIPE MUTASI</th>
+                                    <th class="text-right" style="width:110px">PERUBAHAN</th>
+                                    <th class="text-right" style="width:110px">SALDO STOK</th>
+                                    <th>KETERANGAN / REFERENSI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mutationsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== TAB 4: JURNAL NOTA & PIUTANG ==================== -->
+            <section id="tab-transactions" class="view-pane">
+                <div class="page-head">
+                    <div>
+                        <h2>Jurnal Nota Penjualan & Piutang Kasbon</h2>
+                        <p class="page-sub">Daftar transaksi kasir, pelunasan kasbon pelanggan, cetak ulang struk, dan retur barang.</p>
+                    </div>
+                    <div class="head-actions">
+                        <button class="btn" onclick="ExcelManager.exportTransactionsSheet()">Export Jurnal Penjualan (.xlsx)</button>
+                    </div>
+                </div>
+
+                <div class="metric-ribbon">
+                    <div class="metric-item">
+                        <span class="metric-label">JUMLAH TRANSAKSI</span>
+                        <strong class="metric-val mono" id="trxFilteredCount">0</strong>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">TOTAL OMZET PENJUALAN</span>
+                        <strong class="metric-val mono" id="trxFilteredRevenue">Rp 0</strong>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">TOTAL HPP TERJUAL</span>
+                        <strong class="metric-val mono" id="trxFilteredCost">Rp 0</strong>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">LABA KOTOR (MARGIN)</span>
+                        <strong class="metric-val mono text-ok" id="trxFilteredProfit">Rp 0</strong>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-toolbar">
+                        <div class="search-input-wrap flex-1">
+                            <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="trxSearchInput" placeholder="Cari nomor nota, nama pelanggan, atau item terjual..." oninput="App.renderTransactionsTable()">
+                        </div>
+                        <input type="date" id="trxDateFrom" class="select-control mono" onchange="App.renderTransactionsTable()">
+                        <input type="date" id="trxDateTo" class="select-control mono" onchange="App.renderTransactionsTable()">
+                        <select id="trxMethodFilter" class="select-control" onchange="App.renderTransactionsTable()">
+                            <option value="ALL">Semua Metode Bayar</option>
+                            <option value="Tunai">Tunai</option>
+                            <option value="QRIS">QRIS</option>
+                            <option value="Transfer">Transfer</option>
+                            <option value="Debit">Debit/Kredit</option>
+                            <option value="Kasbon">Kasbon / Tempo</option>
+                        </select>
+                    </div>
+
+                    <div class="table-scroll">
+                        <table class="data-grid">
+                            <thead>
+                                <tr>
+                                    <th style="width:165px">NO. NOTA</th>
+                                    <th style="width:150px">WAKTU</th>
+                                    <th style="width:160px">PELANGGAN</th>
+                                    <th>ITEM TERJUAL</th>
+                                    <th style="width:145px">METODE BAYAR</th>
+                                    <th class="text-right" style="width:130px">TOTAL TAGIHAN</th>
+                                    <th class="text-right" style="width:125px">LABA BERSIH</th>
+                                    <th class="text-right" style="width:205px">TINDAKAN</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== TAB 5: LABA / RUGI ==================== -->
+            <section id="tab-dashboard" class="view-pane">
+                <div class="page-head">
+                    <div>
+                        <h2>Laporan Laba Rugi & Kinerja Produk</h2>
+                        <p class="page-sub">Ringkasan pendapatan, margin keuntungan bersih terhadap HPP, serta pantauan stok kritis.</p>
+                    </div>
+                    <div class="head-actions">
+                        <button class="btn btn-primary" onclick="ExcelManager.exportFullWorkbook()">Download Pembukuan Lengkap (.xlsx)</button>
+                    </div>
+                </div>
+
+                <div class="metric-ribbon">
+                    <div class="metric-item">
+                        <span class="metric-label">OMZET HARI INI</span>
+                        <strong class="metric-val mono" id="dashTodayRevenue">Rp 0</strong>
+                        <span class="metric-note" id="dashTodayTrxCount">0 transaksi hari ini</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">LABA BERSIH HARI INI</span>
+                        <strong class="metric-val mono text-ok" id="dashTodayProfit">Rp 0</strong>
+                        <span class="metric-note" id="dashTodayMargin">Margin 0%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">AKUMULASI BULAN INI</span>
+                        <strong class="metric-val mono" id="dashMonthRevenue">Rp 0</strong>
+                        <span class="metric-note" id="dashMonthProfit">Laba: Rp 0</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">PIUTANG KASBON BELUM LUNAS</span>
+                        <strong class="metric-val mono text-warn" id="dashKasbonTotal">Rp 0</strong>
+                        <span class="metric-note" id="dashKasbonCount">0 nota tempo aktif</span>
+                    </div>
+                </div>
+
+                <div class="two-col-grid">
+                    <div class="table-card">
+                        <div class="card-section-head">
+                            <h3>Kontribusi Penjualan & Laba per Produk</h3>
+                        </div>
+                        <table class="data-grid">
+                            <thead>
+                                <tr>
+                                    <th>NAMA BARANG</th>
+                                    <th class="text-right">TERJUAL</th>
+                                    <th class="text-right">OMZET</th>
+                                    <th class="text-right">LABA</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topProductsTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="card-section-head">
+                            <h3>Barang Wajib Restock (Di Bawah Minimum)</h3>
+                            <button class="btn btn-sm" onclick="App.switchTab('mutations'); App.openMutationModal();">+ Input Stok Masuk</button>
+                        </div>
+                        <table class="data-grid">
+                            <thead>
+                                <tr>
+                                    <th>NAMA BARANG</th>
+                                    <th>RAK</th>
+                                    <th class="text-right">SISA</th>
+                                    <th class="text-right">MINIMUM</th>
+                                    <th>SUPPLIER</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lowStockDashboardBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== TAB 6: DATABASE EXCEL (.XLSX) ==================== -->
+            <section id="tab-excel" class="view-pane">
+                <div class="page-head">
+                    <div>
+                        <h2>Integrasi & Sinkronisasi Berkas Excel (.xlsx)</h2>
+                        <p class="page-sub">Kelola sinkronisasi langsung dengan file Microsoft Excel di komputer, ekspor laporan multi-sheet, dan impor massal.</p>
+                    </div>
+                </div>
+
+                <div class="two-col-grid">
+                    <div class="table-card" style="padding:20px;">
+                        <h3 style="font-size:14.5px; margin-bottom:6px;">Sinkronisasi Langsung ke File .xlsx Lokal</h3>
+                        <p style="color:var(--text-secondary); font-size:13px; margin-bottom:16px;">
+                            Tautkan sebuah file <code>.xlsx</code> dari komputer Anda (mendukung Google Chrome & Microsoft Edge). Setiap transaksi baru atau perubahan stok gudang otomatis ditulis langsung ke dalam file Excel tersebut.
+                        </p>
+
+                        <div class="sync-status-box">
+                            <div>
+                                <span class="micro-label">STATUS BERKAS TERTAUT</span>
+                                <div id="hubExcelStatusText" class="mono" style="font-weight:600; margin-top:2px;">Tidak ada file .xlsx yang ditautkan</div>
+                            </div>
+                            <div style="display:flex; gap:8px;">
+                                <button class="btn btn-primary" onclick="ExcelManager.connectLocalExcel()">Buka & Tautkan File .xlsx</button>
+                                <button class="btn" onclick="ExcelManager.createNewLocalExcel()">Buat File .xlsx Baru</button>
+                            </div>
+                        </div>
+
+                        <hr class="section-divider">
+
+                        <h3 style="font-size:14.5px; margin-bottom:6px;">Import & Update Stok Massal dari Excel</h3>
+                        <p style="color:var(--text-secondary); font-size:13px; margin-bottom:16px;">
+                            Unduh template Excel standar, isi atau ubah ratusan baris barang di Microsoft Excel, lalu unggah kembali untuk memperbarui database gudang sekaligus.
+                        </p>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn" onclick="ExcelManager.downloadTemplate()">1. Unduh Template .xlsx</button>
+                            <label class="btn btn-primary" for="hubImportExcelInput" style="cursor:pointer;">
+                                2. Pilih & Import File .xlsx
+                                <input type="file" id="hubImportExcelInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="ExcelManager.importInventoryFromFile(event)">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="card-section-head">
+                            <h3>Daftar Lembar Kerja (5 Sheet Workbook)</h3>
+                            <button class="btn btn-primary btn-sm" onclick="ExcelManager.exportFullWorkbook()">Unduh Workbook Lengkap (.xlsx)</button>
+                        </div>
+                        <table class="data-grid">
+                            <thead>
+                                <tr>
+                                    <th>NAMA SHEET</th>
+                                    <th>CAKUPAN DATA</th>
+                                    <th class="text-right">UNDUH TERPISAH</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="mono"><strong>Produk_Gudang</strong></td>
+                                    <td>Master SKU, HPP, Harga Eceran/Grosir, Stok & Nilai Aset</td>
+                                    <td class="text-right"><button class="btn btn-sm" onclick="ExcelManager.exportInventorySheet()">Unduh .xlsx</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono"><strong>Riwayat_Transaksi</strong></td>
+                                    <td>Faktur penjualan, metode bayar, diskon, PPN & laba bersih</td>
+                                    <td class="text-right"><button class="btn btn-sm" onclick="ExcelManager.exportTransactionsSheet()">Unduh .xlsx</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono"><strong>Detail_Item_Terjual</strong></td>
+                                    <td>Rincian kuantitas, HPP & margin setiap barang per nota</td>
+                                    <td class="text-right"><button class="btn btn-sm" onclick="ExcelManager.exportTransactionsSheet()">Unduh .xlsx</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono"><strong>Mutasi_Stok</strong></td>
+                                    <td>Kartu keluar-masuk stok gudang dan Stock Opname</td>
+                                    <td class="text-right"><button class="btn btn-sm" onclick="ExcelManager.exportMutationsSheet()">Unduh .xlsx</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="mono"><strong>Ringkasan_Keuangan</strong></td>
+                                    <td>Rekapitulasi nilai aset gudang, omzet & laba kotor</td>
+                                    <td class="text-right"><button class="btn btn-sm" onclick="ExcelManager.exportFullWorkbook()">Unduh Semua</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== TAB 7: PENGATURAN ==================== -->
+            <section id="tab-settings" class="view-pane">
+                <div class="page-head">
+                    <div>
+                        <h2>Pengaturan Toko & Konfigurasi Struk</h2>
+                        <p class="page-sub">Atur informasi header/footer struk belanja, tarif pajak PPN, dan lebar kertas printer thermal.</p>
+                    </div>
+                </div>
+
+                <div class="two-col-grid">
+                    <form class="table-card" style="padding:20px;" onsubmit="App.saveSettings(event)">
+                        <h3 style="font-size:14.5px; margin-bottom:16px;">Profil Usaha & Printer Kasir</h3>
+                        <div class="form-field">
+                            <label>Nama Toko / Usaha</label>
+                            <input type="text" id="setStoreName" required class="input-control">
+                        </div>
+                        <div class="form-field">
+                            <label>Alamat Lengkap</label>
+                            <input type="text" id="setStoreAddress" class="input-control">
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-field">
+                                <label>Nomor Telepon / WhatsApp</label>
+                                <input type="text" id="setStorePhone" class="input-control mono">
+                            </div>
+                            <div class="form-field">
+                                <label>Tarif PPN Default (%)</label>
+                                <input type="number" id="setTaxRate" min="0" max="100" step="0.5" class="input-control mono">
+                            </div>
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-field">
+                                <label>Ukuran Kertas Printer Thermal</label>
+                                <select id="setPaperSize" class="input-control">
+                                    <option value="58mm">Thermal 58mm (Standar Kecil)</option>
+                                    <option value="80mm">Thermal 80mm (Lebar)</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Otomatis Buka Dialog Print Saat Bayar</label>
+                                <select id="setAutoPrint" class="input-control">
+                                    <option value="false">Tampilkan pratinjau struk terlebih dahulu</option>
+                                    <option value="true">Langsung cetak saat klik bayar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <label>Pesan Catatan Kaki Struk (Footer)</label>
+                            <textarea id="setReceiptFooter" rows="2" class="input-control"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Simpan Pengaturan</button>
+                    </form>
+
+                    <div class="table-card" style="padding:20px;">
+                        <h3 style="font-size:14.5px; margin-bottom:8px;">Pemeliharaan Data Lokal</h3>
+                        <p style="color:var(--text-secondary); font-size:13px; margin-bottom:16px;">
+                            Kembalikan database ke contoh barang awal atau kosongkan seluruh riwayat transaksi untuk memulai pembukuan baru.
+                        </p>
+                        <div style="display:flex; flex-direction:column; gap:10px; max-width:320px;">
+                            <button class="btn" onclick="App.resetToDemoData()">Muat Ulang Data Contoh Awal</button>
+                            <button class="btn btn-danger" onclick="App.clearAllData()">Kosongkan Seluruh Barang & Transaksi</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ==================== MODAL: BARANG ==================== -->
+    <div class="modal-overlay no-print hidden" id="productModal">
+        <div class="modal-window">
+            <div class="modal-head">
+                <h3 id="productModalTitle">Tambah Data Barang</h3>
+                <button class="btn-close-modal" onclick="App.closeProductModal()">&times;</button>
+            </div>
+            <form id="productForm" onsubmit="App.saveProduct(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="prodId">
+                    <div class="form-grid-2">
+                        <div class="form-field">
+                            <label>Kode SKU / Barcode *</label>
+                            <div style="display:flex; gap:6px;">
+                                <input type="text" id="prodSku" required class="input-control mono">
+                                <button type="button" class="btn" onclick="App.generateRandomSku()">Auto</button>
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <label>Kategori *</label>
+                            <input type="text" id="prodCategory" list="categorySuggestions" required class="input-control">
+                            <datalist id="categorySuggestions">
+                                <option value="Sembako">
+                                <option value="Minuman">
+                                <option value="Makanan Ringan">
+                                <option value="Kebutuhan Rumah">
+                                <option value="ATK & Kantor">
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Nama Barang Lengkap *</label>
+                        <input type="text" id="prodName" required class="input-control">
+                    </div>
+
+                    <div class="form-grid-3">
+                        <div class="form-field">
+                            <label>Harga Modal / HPP (Rp) *</label>
+                            <input type="number" id="prodCost" required min="0" step="50" class="input-control mono">
+                        </div>
+                        <div class="form-field">
+                            <label>Harga Jual Eceran (Rp) *</label>
+                            <input type="number" id="prodPrice" required min="0" step="50" class="input-control mono">
+                        </div>
+                        <div class="form-field">
+                            <label>Harga Grosir (Rp)</label>
+                            <input type="number" id="prodWholesalePrice" min="0" step="50" class="input-control mono">
+                        </div>
+                    </div>
+
+                    <div class="form-grid-4">
+                        <div class="form-field">
+                            <label>Stok Saat Ini *</label>
+                            <input type="number" id="prodStock" required min="0" class="input-control mono">
+                        </div>
+                        <div class="form-field">
+                            <label>Stok Minimum *</label>
+                            <input type="number" id="prodMinStock" required min="0" value="5" class="input-control mono">
+                        </div>
+                        <div class="form-field">
+                            <label>Satuan *</label>
+                            <select id="prodUnit" class="input-control">
+                                <option value="Pcs">Pcs</option>
+                                <option value="Pack">Pack</option>
+                                <option value="Box">Box</option>
+                                <option value="Kg">Kg</option>
+                                <option value="Liter">Liter</option>
+                                <option value="Botol">Botol</option>
+                                <option value="Sachet">Sachet</option>
+                                <option value="Lusin">Lusin</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label>Lokasi Rak</label>
+                            <input type="text" id="prodRack" placeholder="Rak A-01" class="input-control">
+                        </div>
+                    </div>
+
+                    <div class="form-field" style="margin-bottom:0;">
+                        <label>Nama Supplier / Pemasok</label>
+                        <input type="text" id="prodSupplier" class="input-control">
+                    </div>
+                </div>
+                <div class="modal-foot">
+                    <button type="button" class="btn" onclick="App.closeProductModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Barang</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: MUTASI STOK ==================== -->
+    <div class="modal-overlay no-print hidden" id="mutationModal">
+        <div class="modal-window">
+            <div class="modal-head">
+                <h3>Catat Mutasi Stok Gudang</h3>
+                <button class="btn-close-modal" onclick="App.closeMutationModal()">&times;</button>
+            </div>
+            <form id="mutationForm" onsubmit="App.saveMutation(event)">
+                <div class="modal-body">
+                    <div class="form-field">
+                        <label>Pilih Barang *</label>
+                        <select id="mutProductId" required class="input-control" onchange="App.onMutationProductChange()"></select>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-field">
+                            <label>Jenis Mutasi *</label>
+                            <select id="mutType" required class="input-control" onchange="App.onMutationProductChange()">
+                                <option value="IN">Stok Masuk (+ Pembelian / Restock)</option>
+                                <option value="OUT">Stok Keluar (- Barang Rusak / Kadaluarsa)</option>
+                                <option value="OPNAME">Stock Opname (Tetapkan Jumlah Fisik Baru)</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label id="mutQtyLabel">Jumlah *</label>
+                            <input type="number" id="mutQty" required min="1" value="10" class="input-control mono">
+                        </div>
+                    </div>
+                    <div class="stock-info-bar mono" id="mutCurrentStockInfo">Stok saat ini: 0</div>
+                    <div class="form-field" style="margin-bottom:0;">
+                        <label>Nomor Referensi / Keterangan *</label>
+                        <input type="text" id="mutNote" required placeholder="Contoh: Faktur Supplier #104 / Koreksi fisik bulanan" class="input-control">
+                    </div>
+                </div>
+                <div class="modal-foot">
+                    <button type="button" class="btn" onclick="App.closeMutationModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Mutasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: STRUK ==================== -->
+    <div class="modal-overlay no-print hidden" id="receiptModal">
+        <div class="modal-window modal-narrow">
+            <div class="modal-head">
+                <h3>Pratinjau Struk Kasir</h3>
+                <button class="btn-close-modal" onclick="App.closeReceiptModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="receipt-paper" id="receiptModalPreview"></div>
+            </div>
+            <div class="modal-foot">
+                <button type="button" class="btn" onclick="App.closeReceiptModal()">Tutup</button>
+                <button type="button" class="btn btn-primary" onclick="window.print()">Cetak Struk</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-stack no-print"></div>
+    <div id="printableReceipt" class="print-only paper-58mm"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/excel.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
