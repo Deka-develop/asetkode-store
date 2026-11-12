@@ -18,7 +18,7 @@ const FALLBACK_PRODUCTS = [
     categories: ['Web App', 'Source Code', 'JavaScript'],
     price: 'Rp 69.000',
     oldPrice: 'Rp 199.000',
-    paymentUrl: 'https://example.com/checkout/pos-kasir',
+    paymentUrl: 'https://deka-sogi-68491.myr.id/pl/source-code-aplikasi-kasir-pos-inventaris-gudang-live-sync-excel',
     demoUrl: 'demo/kasir/',
     postUrl: 'https://asetkode.blogspot.com/2026/11/source-code-aplikasi-kasir-inventori.html',
     version: 'v2.4 (Terbaru)',
