@@ -18,9 +18,9 @@ const FALLBACK_PRODUCTS = [
     categories: ['Web App', 'Source Code', 'JavaScript'],
     price: 'Rp 69.000',
     oldPrice: 'Rp 199.000',
-    paymentUrl: 'https://deka-sogi-68491.myr.id/pl/source-code-aplikasi-kasir-pos-inventaris-gudang-live-sync-excel',
+    paymentUrl: 'mailto:dekamayooo@gmail.com?subject=Order%20Aplikasi%20Kasir%20POS%20%26%20Excel%20(Rp%2069.000)&body=Halo%20Admin%20AsetKode%2C%0A%0ASaya%20ingin%20membeli%3A%0A-%20Produk%3A%20Source%20Code%20Aplikasi%20Kasir%20(POS)%20%26%20Inventaris%20Gudang%20Live%20Sync%20Excel%0A-%20Harga%3A%20Rp%2069.000%0A%0AMohon%20info%20nomor%20rekening%20%2F%20QRIS%20untuk%20pembayaran.%20Terima%20kasih.',
     demoUrl: 'demo/kasir/',
-    postUrl: 'https://asetkode.blogspot.com/2026/11/source-code-aplikasi-kasir-inventori.html',
+    postUrl: 'https://asetkode.blogspot.com/2026/11/source-code-aplikasi-kasir-pos.html',
     version: 'v2.4 (Terbaru)',
     stack: 'HTML5 + JavaScript (Zero-Config) + Live Excel (.xlsx) Sync',
     license: 'Personal & Komersial (Toko Sendiri / Klien)',
@@ -1051,10 +1051,14 @@ function launchCheckoutGateway(order) {
   if (extLink) extLink.href = order.paymentUrl || '#';
 
   const isPlaceholder = !order.paymentUrl || order.paymentUrl.includes('example.com');
+  const isMailto = !isPlaceholder && order.paymentUrl.startsWith('mailto:');
   if (iframe) {
     if (isPlaceholder) {
       iframe.removeAttribute('src');
       iframe.srcdoc = buildBuiltInPaymentGatewayHTML(order);
+    } else if (isMailto) {
+      iframe.removeAttribute('src');
+      iframe.srcdoc = buildEmailOrderHTML(order);
     } else {
       iframe.removeAttribute('srcdoc');
       iframe.src = order.paymentUrl;
@@ -1062,6 +1066,56 @@ function launchCheckoutGateway(order) {
   }
 
   if (modal) modal.classList.add('open');
+}
+
+function buildEmailOrderHTML(order) {
+  const raw = String(order.paymentUrl || '');
+  const withoutScheme = raw.replace(/^mailto:/i, '');
+  const qIdx = withoutScheme.indexOf('?');
+  const email = qIdx >= 0 ? withoutScheme.slice(0, qIdx) : withoutScheme;
+  const params = new URLSearchParams(qIdx >= 0 ? withoutScheme.slice(qIdx + 1) : '');
+  const subject = params.get('subject') || `Order ${order.title}`;
+  const body = params.get('body') || `Halo Admin, saya ingin membeli ${order.title} (${order.price}).`;
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+  return `<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+  body{margin:0;padding:24px;background:#f8fafc;color:#0f172a;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+  .card{width:100%;max-width:480px;background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;box-shadow:0 12px 30px rgba(15,23,42,.06);}
+  .badge{display:inline-block;background:#dbeafe;color:#1d4ed8;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;margin-bottom:10px;}
+  h2{margin:0 0 6px;font-size:19px;}
+  .price{font-size:22px;font-weight:800;color:#2563eb;margin-bottom:14px;}
+  .box{background:#f1f5f9;border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.5;margin-bottom:16px;}
+  .email-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:8px 10px;margin-top:8px;font-weight:700;}
+  .copy-btn{border:none;background:#0f172a;color:#fff;border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer;font-weight:600;}
+  .actions{display:flex;flex-direction:column;gap:10px;}
+  .btn{display:block;text-align:center;text-decoration:none;padding:12px 16px;border-radius:10px;font-weight:700;font-size:14px;}
+  .btn-gmail{background:#ea4335;color:#fff;}
+  .btn-mail{background:#2563eb;color:#fff;}
+  .note{margin-top:12px;font-size:12px;color:#64748b;text-align:center;}
+</style></head>
+<body>
+  <div class="card">
+    <span class="badge">Order Resmi via Email</span>
+    <h2>${esc(order.title)}</h2>
+    <div class="price">${esc(order.price)}</div>
+    <div class="box">
+      <div>Kirim email pemesanan ke admin untuk mendapatkan detail pembayaran (Transfer / QRIS) dan file produk ZIP dikirim langsung ke email Anda.</div>
+      <div class="email-row">
+        <span id="admEmail">${esc(email)}</span>
+        <button class="copy-btn" type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText('${esc(email)}');this.textContent='Tersalin!';setTimeout(()=>this.textContent='Salin',1800)">Salin</button>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn btn-gmail" href="${esc(gmailUrl)}" target="_blank" rel="noopener">Kirim via Gmail Web</a>
+      <a class="btn btn-mail" href="${esc(raw)}">Buka Aplikasi Email (Mailto)</a>
+    </div>
+    <div class="note">Format pesan &amp; subjek order sudah terisi otomatis.</div>
+  </div>
+</body></html>`;
 }
 
 function buildBuiltInPaymentGatewayHTML(order) {
