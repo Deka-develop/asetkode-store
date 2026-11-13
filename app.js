@@ -337,6 +337,98 @@ const FALLBACK_PRODUCTS = [
       'Laporan omzet penjualan harian dan bulanan sederhana.',
       'Desain antarmuka bersih menggunakan Bootstrap 5, nyaman di layar laptop maupun tablet kasir.'
     ]
+  },
+  {
+    id: 'prod-14',
+    title: 'Template Desain Web Company Profile & Digital Agency Modern (HTML5 + Tailwind)',
+    categories: ['Desain Web', 'Template', 'Source Code', 'JavaScript'],
+    price: 'Rp 59.000',
+    oldPrice: 'Rp 149.000',
+    paymentUrl: '',
+    demoUrl: '',
+    postUrl: '#',
+    version: 'v2.2 (Terbaru)',
+    stack: 'HTML5 + Tailwind CSS + Vanilla JS',
+    license: 'Personal & Komersial (Unlimited Project)',
+    openMode: 'modal',
+    demoType: 'saas',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=900&q=80',
+    summary: 'Desain web Company Profile & Agensi Digital modern dengan tata letak bersih, dark/light mode, portofolio interaktif, tabel paket layanan, dan form kontak cepat.',
+    features: [
+      '8+ Halaman & Seksi Siap Pakai (Hero, Layanan, Portofolio, Tim, Harga, Testimoni, FAQ, Kontak).',
+      'Desain Web Responsif 100% di Desktop, Tablet, dan Smartphone.',
+      'Animasi Scroll Halus & Skor Performa Tinggi (Tanpa Framework Berat).',
+      'Kode HTML5 & CSS Rapi Mudah Diganti Logo, Warna, dan Teks.'
+    ]
+  },
+  {
+    id: 'prod-15',
+    title: 'Desain Web Portfolio Pribadi & Link-in-Bio Kreator Minimalis (Dark/Light)',
+    categories: ['Desain Web', 'Template', 'JavaScript'],
+    price: 'Rp 39.000',
+    oldPrice: 'Rp 89.000',
+    paymentUrl: '',
+    demoUrl: '',
+    postUrl: '#',
+    version: 'v1.4 (Terbaru)',
+    stack: 'HTML5 + CSS3 + JavaScript',
+    license: 'Personal & Komersial',
+    openMode: 'modal',
+    demoType: 'saas',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=900&q=80',
+    summary: 'Template desain web portfolio pribadi sekaligus halaman Link-in-Bio profesional untuk developer, desainer, content creator, dan pekerja lepas.',
+    features: [
+      'Gabungan Halaman Link-in-Bio & Showcase Portofolio Karya.',
+      'Tombol Salin Email & Tautan Sosial Media 1-Klik.',
+      'Mode Gelap & Terang Otomatis.',
+      'Sangat Ringan (<100 KB) & Ramah SEO.'
+    ]
+  },
+  {
+    id: 'prod-16',
+    title: 'Program Aplikasi Manajemen Antrian & Tiket Layanan Pelanggan Web + Suara Panggil',
+    categories: ['Program', 'Web App', 'Source Code', 'JavaScript'],
+    price: 'Rp 89.000',
+    oldPrice: 'Rp 199.000',
+    paymentUrl: '',
+    demoUrl: '',
+    postUrl: '#',
+    version: 'v1.8 (Terbaru)',
+    stack: 'HTML5 + JavaScript + Web Speech API (Zero-Config)',
+    license: 'Personal & Komersial',
+    openMode: 'modal',
+    demoType: 'dashboard',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=900&q=80',
+    summary: 'Program antrian digital berbasis web untuk klinik, apotek, bengkel, loket pelayanan, dan toko servis dengan layar monitor & panggilan suara otomatis.',
+    features: [
+      'Panggilan Suara Otomatis Bahasa Indonesia (Nomor Antrian & Loket).',
+      'Layar Monitor Antrian Fullscreen untuk TV/Monitor Ruang Tunggu.',
+      'Dukungan Multi-Loket / Multi-Layanan & Reset Antrian Harian.',
+      'Zero-Config: Langsung jalan di browser tanpa install server rumit.'
+    ]
+  },
+  {
+    id: 'prod-17',
+    title: 'Paket Desain Web UI Kit E-Commerce & SaaS Components (HTML/CSS/JS Siap Pakai)',
+    categories: ['Desain Web', 'Template', 'Web App', 'Source Code'],
+    price: 'Rp 69.000',
+    oldPrice: 'Rp 159.000',
+    paymentUrl: '',
+    demoUrl: '',
+    postUrl: '#',
+    version: 'v2.0 (Terbaru)',
+    stack: 'HTML5 + CSS3 + Modular JS',
+    license: 'Personal & Komersial (Unlimited Project)',
+    openMode: 'modal',
+    demoType: 'ecom',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1545235617-9465d2a55698?auto=format&fit=crop&w=900&q=80',
+    summary: 'Koleksi 40+ komponen desain web siap copy-paste untuk proyek Toko Online & SaaS: Navbar, Pricing Table, Checkout Modal, Filter Produk, & FAQ.',
+    features: [
+      '40+ Komponen UI Siap Pakai Tanpa Dependency Berat.',
+      'Sudah Mendukung Dark Mode & Light Mode.',
+      'Mudah Digabung ke Laravel, React, Vue, atau HTML Biasa.',
+      'Struktur CSS Variabel Bersih untuk Ganti Warna Brand dalam Sekejap.'
+    ]
   }
 ];
 
