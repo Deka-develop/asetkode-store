@@ -14,8 +14,10 @@ const SITE_CONFIG = {
   orderEmail: 'dekamayooo@gmail.com',
   paymentMode: 'email', // 'email' (order via email saat ini) | 'gateway' (otomatis QRIS/Mayar setelah pasang domain)
   bloggerOrigin: 'https://asetkode.blogspot.com',
-  bundlePrice: 'Rp 249.000',
-  bundlePriceNum: 249000
+  onlyReadyProducts: true, // true = hanya tampilkan produk yang sudah punya paket .ZIP & demo siap kirim
+  readyIds: ['prod-1', 'prod-2', 'prod-9', 'prod-14', 'prod-15', 'prod-16', 'prod-17'],
+  bundlePrice: 'Rp 199.000',
+  bundlePriceNum: 199000
 };
 
 const BLOGGER_ORIGIN = SITE_CONFIG.bloggerOrigin;
@@ -564,6 +566,12 @@ function renderProductsGrid() {
   if (!grid) return;
 
   let list = productsState.filter((item) => {
+    if (SITE_CONFIG.onlyReadyProducts) {
+      const isReadyId = Array.isArray(SITE_CONFIG.readyIds) && SITE_CONFIG.readyIds.includes(item.id);
+      const hasLocalDemo = Boolean(item.demoUrl && item.demoUrl.includes('demo/'));
+      if (!isReadyId && !hasLocalDemo) return false;
+    }
+
     const matchesCat =
       activeCategory === 'all' ||
       item.categories.some((c) => c.toLowerCase() === activeCategory.toLowerCase());
@@ -1460,6 +1468,53 @@ function initFaqAccordion() {
     });
   });
 }
+
+window.openLegalModal = function (type) {
+  const modal = document.getElementById('detailModal');
+  const titleEl = document.getElementById('detailModalTitle');
+  const bodyEl = document.getElementById('detailModalBody');
+  if (!modal || !titleEl || !bodyEl) return;
+
+  const docs = {
+    about: {
+      title: `Tentang ${SITE_CONFIG.brandName}`,
+      html: `
+        <h3 style="margin-bottom:10px;">Solusi Produk Digital &amp; Source Code Siap Pakai</h3>
+        <p style="margin-bottom:12px;color:var(--text-secondary);"><strong>${SITE_CONFIG.brandName}</strong> menyediakan berbagai aplikasi web, program bisnis (Kasir POS &amp; Antrian), serta template desain web modern yang siap pakai untuk UMKM, freelancer, dan developer.</p>
+        <p style="margin-bottom:12px;color:var(--text-secondary);">Setiap produk yang tampil di katalog kami telah melalui uji coba dan dilengkapi <strong>Interactive Live Demo</strong> sehingga Anda dapat melihat kualitasnya sebelum membeli.</p>
+        <p style="color:var(--text-secondary);">Kontak resmi &amp; dukungan pelanggan: <strong>${SITE_CONFIG.orderEmail}</strong></p>
+      `
+    },
+    terms: {
+      title: 'Syarat, Ketentuan & Lisensi Produk',
+      html: `
+        <h3 style="margin-bottom:10px;">Ketentuan Lisensi Personal &amp; Komersial</h3>
+        <ul style="padding-left:18px;display:flex;flex-direction:column;gap:8px;color:var(--text-secondary);">
+          <li>Pembeli mendapatkan <strong>100% Full Source Code terbuka</strong> tanpa enkripsi beserta panduan penggunaan.</li>
+          <li>Anda bebas menggunakan dan memodifikasi source code untuk kebutuhan pribadi, bisnis sendiri, maupun proyek klien komersial.</li>
+          <li><strong>Dilarang</strong> menjual ulang, membagikan gratis secara publik, atau mendistribusikan file mentah produk ini sebagai produk template/source code saingan.</li>
+          <li>Pembayaran bersifat 1 kali bayar (tanpa biaya langganan bulanan).</li>
+        </ul>
+      `
+    },
+    refund: {
+      title: 'Kebijakan Pengembalian Dana (Refund) & Bantuan',
+      html: `
+        <h3 style="margin-bottom:10px;">Kebijakan Produk Digital</h3>
+        <ul style="padding-left:18px;display:flex;flex-direction:column;gap:8px;color:var(--text-secondary);">
+          <li>Karena produk berupa file digital (source code <code>.ZIP</code>) yang tidak dapat ditarik kembali setelah dikirim, pembelian yang sudah dikirim bersifat final (non-refundable).</li>
+          <li>Silakan uji coba <strong>Live Demo</strong> terlebih dahulu sebelum melakukan pemesanan agar yakin sesuai kebutuhan Anda.</li>
+          <li><strong>Garansi File &amp; Dukungan:</strong> Jika file <code>.ZIP</code> rusak/korup atau terdapat kendala saat instalasi awal mengikuti panduan, tim kami akan mengirimkan ulang file dan membantu via email <strong>${SITE_CONFIG.orderEmail}</strong>.</li>
+        </ul>
+      `
+    }
+  };
+
+  const doc = docs[type] || docs.about;
+  titleEl.textContent = doc.title;
+  bodyEl.innerHTML = `<div style="font-size:0.92rem;line-height:1.7;">${doc.html}</div>`;
+  modal.classList.add('open');
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   applySiteBranding();
