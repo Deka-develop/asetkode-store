@@ -256,7 +256,7 @@ const FALLBACK_PRODUCTS = [
     license: 'Personal & Komersial',
     openMode: 'popup',
     demoType: 'bot',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1614680376593-902f749f7ffc?auto=format&fit=crop&w=900&q=80',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80',
     summary: 'Bot otomatisasi yang terhubung langsung dengan Google Sheets. Bot akan membaca tanggal jatuh tempo tagihan atau jadwal sewa, lalu mengirimkan pesan pengingat otomatis ke Telegram.',
     features: [
       'Sinkronisasi real-time dengan Google Sheets pribadi Anda.',
@@ -1553,3 +1553,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
