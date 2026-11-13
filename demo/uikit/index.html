@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UI Kit E-Commerce &amp; SaaS Components — Siap Pakai</title>
+  <link rel="stylesheet" href="tokens.css" />
+</head>
+<body>
+  <header class="kit-bar">
+    <div class="container kit-bar-inner">
+      <div class="kit-brand">UI Kit Pro <span class="badge">v2.0</span></div>
+      <div class="kit-filter" id="kitFilter">
+        <button type="button" class="chip active" data-group="all">Semua Komponen</button>
+        <button type="button" class="chip" data-group="ecommerce">E-Commerce</button>
+        <button type="button" class="chip" data-group="saas">SaaS</button>
+        <button type="button" class="chip" data-group="feedback">Modal &amp; FAQ</button>
+      </div>
+      <button type="button" class="btn btn-outline btn-sm" id="toggleTheme">Mode Gelap / Terang</button>
+    </div>
+  </header>
+
+  <main class="container kit-main">
+    <div class="kit-intro">
+      <h1>Komponen Desain Web E-Commerce &amp; SaaS Siap Copy-Paste</h1>
+      <p>Ubah warna brand cukup dari <code>tokens.css</code>. Klik <strong>Salin Kode</strong> pada blok komponen mana saja untuk langsung menempelnya ke proyek HTML, Laravel, React, atau Vue Anda.</p>
+    </div>
+
+    <!-- KOMPONEN 1: NAVBAR + CART BADGE -->
+    <section class="comp-block" data-group="ecommerce">
+      <div class="comp-head">
+        <div><strong>01. Sticky Navbar + Search + Cart Badge</strong><span>E-Commerce Header</span></div>
+        <button type="button" class="btn btn-primary btn-sm copy-btn" data-target="comp1">Salin Kode HTML</button>
+      </div>
+      <div class="comp-preview" id="comp1">
+        <nav class="ui-navbar">
+          <div class="ui-logo">BrandStore</div>
+          <input type="search" class="ui-search" placeholder="Cari produk..." />
+          <div class="ui-nav-actions">
+            <a href="#comp1">Katalog</a>
+            <button type="button" class="btn btn-primary btn-sm">Keranjang <span class="ui-pill">2</span></button>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    <!-- KOMPONEN 2: PRODUCT CARD -->
+    <section class="comp-block" data-group="ecommerce">
+      <div class="comp-head">
+        <div><strong>02. E-Commerce Product Card + Badge Diskon</strong><span>Catalog Grid Item</span></div>
+        <button type="button" class="btn btn-primary btn-sm copy-btn" data-target="comp2">Salin Kode HTML</button>
+      </div>
+      <div class="comp-preview" id="comp2">
+        <div class="ui-grid-3">
+          <article class="ui-card">
+            <span class="ui-badge-disc">HEMAT 40%</span>
+            <div class="ui-card-img">Preview Produk</div>
+            <h3>Source Code Kasir POS</h3>
+            <p class="ui-muted">Aplikasi kasir web siap pakai dengan export Excel.</p>
+            <div class="ui-price-row">
+              <strong>Rp 69.000</strong>
+              <del>Rp 115.000</del>
+            </div>
+            <button type="button" class="btn btn-primary" style="width:100%;" onclick="showKitToast('Ditambahkan ke keranjang!')">+ Tambah ke Keranjang</button>
+          </article>
+          <article class="ui-card">
+            <span class="ui-badge-disc">TERLARIS</span>
+            <div class="ui-card-img">Preview Produk</div>
+            <h3>Landing Page UMKM Pro</h3>
+            <p class="ui-muted">Desain web responsif terhubung WhatsApp otomatis.</p>
+            <div class="ui-price-row">
+              <strong>Rp 49.000</strong>
+              <del>Rp 99.000</del>
+            </div>
+            <button type="button" class="btn btn-outline" style="width:100%;" onclick="showKitToast('Ditambahkan ke keranjang!')">+ Tambah ke Keranjang</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- KOMPONEN 3: SAAS PRICING TABLE WITH TOGGLE -->
+    <section class="comp-block" data-group="saas">
+      <div class="comp-head">
+        <div><strong>03. SaaS Pricing Table (Toggle Bulanan / Tahunan)</strong><span>Conversion Section</span></div>
+        <button type="button" class="btn btn-primary btn-sm copy-btn" data-target="comp3">Salin Kode HTML</button>
+      </div>
+      <div class="comp-preview" id="comp3">
+        <div class="pricing-toggle-wrap">
+          <span>Bulanan</span>
+          <button type="button" class="switch-btn" id="billingSwitch" aria-pressed="false"></button>
+          <span>Tahunan <strong style="color:var(--accent-blue);">(Hemat 20%)</strong></span>
+        </div>
+        <div class="ui-grid-3">
+          <div class="ui-card">
+            <h3>Starter</h3>
+            <div class="ui-big-price" data-month="Rp 49rb" data-year="Rp 39rb">Rp 49rb</div>
+            <ul class="ui-list">
+              <li>✓ 1 Proyek Aktif</li>
+              <li>✓ Analytics Dasar</li>
+              <li>✓ Support Email</li>
+            </ul>
+            <button type="button" class="btn btn-outline" style="width:100%;">Pilih Starter</button>
+          </div>
+          <div class="ui-card ui-card-pop">
+            <span class="ui-badge-disc">POPULER</span>
+            <h3>Business Pro</h3>
+            <div class="ui-big-price" data-month="Rp 149rb" data-year="Rp 119rb">Rp 149rb</div>
+            <ul class="ui-list">
+              <li>✓ Unlimited Proyek</li>
+              <li>✓ Custom Domain &amp; SSL</li>
+              <li>✓ Prioritas Support</li>
+            </ul>
+            <button type="button" class="btn btn-primary" style="width:100%;">Pilih Business Pro</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KOMPONEN 4: FAQ ACCORDION & TOAST -->
+    <section class="comp-block" data-group="feedback">
+      <div class="comp-head">
+        <div><strong>04. Interactive FAQ Accordion &amp; Toast Alert</strong><span>Trust &amp; Feedback</span></div>
+        <button type="button" class="btn btn-primary btn-sm copy-btn" data-target="comp4">Salin Kode HTML</button>
+      </div>
+      <div class="comp-preview" id="comp4">
+        <div class="ui-faq">
+          <details open>
+            <summary>Apakah komponen ini mendukung Dark Mode?</summary>
+            <p>Ya, seluruh komponen menggunakan CSS Variables di tokens.css sehingga otomatis berubah saat data-theme="dark".</p>
+          </details>
+          <details>
+            <summary>Apakah bisa dipakai di Laravel, React, atau HTML statis?</summary>
+            <p>Bisa. Struktur HTML dan CSS murni tanpa dependency framework eksternal.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="kitToast" class="kit-toast"></div>
+
+  <script>
+    function showKitToast(msg) {
+      const t = document.getElementById('kitToast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(window._kt);
+      window._kt = setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    document.getElementById('toggleTheme').addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+    });
+
+    document.getElementById('billingSwitch').addEventListener('click', function () {
+      const yearly = this.getAttribute('aria-pressed') !== 'true';
+      this.setAttribute('aria-pressed', String(yearly));
+      document.querySelectorAll('.ui-big-price').forEach((el) => {
+        el.textContent = el.getAttribute(yearly ? 'data-year' : 'data-month');
+      });
+    });
+
+    document.querySelectorAll('#kitFilter .chip').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#kitFilter .chip').forEach((c) => c.classList.remove('active'));
+        btn.classList.add('active');
+        const g = btn.getAttribute('data-group');
+        document.querySelectorAll('.comp-block').forEach((blk) => {
+          blk.style.display = g === 'all' || blk.getAttribute('data-group') === g ? 'block' : 'none';
+        });
+      });
+    });
+
+    document.querySelectorAll('.copy-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.getAttribute('data-target'));
+        if (!target) return;
+        navigator.clipboard.writeText(target.innerHTML.trim());
+        showKitToast('Kode HTML komponen disalin!');
+      });
+    });
+  </script>
+</body>
+</html>

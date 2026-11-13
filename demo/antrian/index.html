@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Antrian Digital &amp; Suara Panggil Otomatis</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar no-print">
+    <div class="brand-wrap">
+      <div class="logo-box">Q</div>
+      <div>
+        <div class="brand-title" id="clinicName">Sistem Antrian Digital Pro</div>
+        <div class="brand-sub">Multi-Loket • Suara Panggil Indonesia • Cetak Tiket</div>
+      </div>
+    </div>
+    <div class="mode-tabs" role="tablist">
+      <button type="button" class="tab-btn active" data-view="operator">Panel Operator</button>
+      <button type="button" class="tab-btn" data-view="monitor">Monitor TV</button>
+      <button type="button" class="tab-btn" data-view="kiosk">Kios Ambil Tiket</button>
+    </div>
+    <div class="top-actions">
+      <label class="voice-toggle">
+        <input type="checkbox" id="voiceEnabled" checked />
+        <span>Suara Panggil</span>
+      </label>
+      <button type="button" class="btn-outline" id="exportCsvBtn">Export CSV</button>
+      <button type="button" class="btn-danger" id="resetQueueBtn">Reset Harian</button>
+    </div>
+  </header>
+
+  <main class="main-wrap">
+    <!-- VIEW 1: PANEL OPERATOR LOKET -->
+    <section id="view-operator" class="view-panel active no-print">
+      <div class="op-grid">
+        <div class="panel-card">
+          <div class="card-head">
+            <h2>Kontrol Pemanggilan Loket</h2>
+            <select id="activeLoketSelect" class="select-input">
+              <option value="Loket 1">Loket 1 (Kasir / Umum)</option>
+              <option value="Loket 2">Loket 2 (Customer Service)</option>
+              <option value="Loket 3">Loket 3 (Prioritas / Pengambilan)</option>
+            </select>
+          </div>
+
+          <div class="now-serving-box">
+            <div class="lbl">SEDANG DIPANGGIL</div>
+            <div class="big-num" id="opCurrentNum">—</div>
+            <div class="sub-info" id="opCurrentMeta">Belum ada antrian dipanggil</div>
+          </div>
+
+          <div class="op-controls">
+            <button type="button" class="btn-primary btn-lg" id="callNextBtn">▶ Panggil Berikutnya</button>
+            <button type="button" class="btn-outline" id="recallBtn">🔊 Panggil Ulang</button>
+            <button type="button" class="btn-outline" id="skipBtn">⏭ Lewati</button>
+          </div>
+
+          <div class="quick-issue">
+            <span class="lbl" style="display:block;margin-bottom:8px;">Tambah Antrian Cepat dari Operator:</span>
+            <div class="issue-row">
+              <button type="button" class="btn-chip" data-take="A">+ Ambil A (Umum)</button>
+              <button type="button" class="btn-chip" data-take="B">+ Ambil B (CS)</button>
+              <button type="button" class="btn-chip" data-take="C">+ Ambil C (Prioritas)</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="card-head">
+            <h2>Daftar Antrian Menunggu (<span id="waitingCount">0</span>)</h2>
+            <span class="badge-live">● Sinkron Otomatis</span>
+          </div>
+          <div class="queue-list" id="waitingList"></div>
+
+          <h3 style="font-size:0.9rem;margin:18px 0 8px;color:#94a3b8;">Riwayat Panggilan Terakhir</h3>
+          <div class="history-list" id="historyList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: MONITOR TV RUANG TUNGGU -->
+    <section id="view-monitor" class="view-panel no-print">
+      <div class="monitor-grid">
+        <div class="monitor-hero">
+          <div class="mon-label">NOMOR ANTRIAN DIPANGGIL</div>
+          <div class="mon-number" id="monCurrentNum">—</div>
+          <div class="mon-loket" id="monCurrentLoket">SILAKAN MENUNGGU</div>
+          <div class="mon-clock" id="monClock">--:--:--</div>
+        </div>
+        <div class="monitor-side">
+          <div class="mon-card">
+            <div class="mon-card-lbl">Layanan A (Umum)</div>
+            <div class="mon-card-val" id="monLastA">—</div>
+          </div>
+          <div class="mon-card">
+            <div class="mon-card-lbl">Layanan B (CS)</div>
+            <div class="mon-card-val" id="monLastB">—</div>
+          </div>
+          <div class="mon-card">
+            <div class="mon-card-lbl">Layanan C (Prioritas)</div>
+            <div class="mon-card-val" id="monLastC">—</div>
+          </div>
+          <div class="mon-card">
+            <div class="mon-card-lbl">Sisa Menunggu</div>
+            <div class="mon-card-val" id="monWaitingTotal">0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: KIOS AMBIL TIKET ANTRIAN -->
+    <section id="view-kiosk" class="view-panel no-print">
+      <div class="kiosk-wrap">
+        <h2>Selamat Datang! Silakan Ambil Nomor Antrian</h2>
+        <p class="kiosk-sub">Klik jenis layanan di bawah ini untuk mendapatkan nomor antrian dan cetak struk tiket.</p>
+        <div class="kiosk-btns">
+          <button type="button" class="kiosk-btn" data-take="A" data-print="1">
+            <span class="k-code">A</span>
+            <strong>Layanan Umum / Kasir</strong>
+            <span>Estimasi sisa: <em id="kioskCountA">0</em> antrian</span>
+          </button>
+          <button type="button" class="kiosk-btn" data-take="B" data-print="1">
+            <span class="k-code">B</span>
+            <strong>Customer Service / Konsultasi</strong>
+            <span>Estimasi sisa: <em id="kioskCountB">0</em> antrian</span>
+          </button>
+          <button type="button" class="kiosk-btn" data-take="C" data-print="1">
+            <span class="k-code">C</span>
+            <strong>Layanan Prioritas / Pengambilan</strong>
+            <span>Estimasi sisa: <em id="kioskCountC">0</em> antrian</span>
+          </button>
+        </div>
+
+        <div class="ticket-preview" id="lastTicketBox" style="display:none;">
+          <div class="lbl">TIKET TERAKHIR ANDA</div>
+          <div class="ticket-num" id="ticketPreviewNum">A-001</div>
+          <div id="ticketPreviewMeta" style="font-size:0.85rem;color:#94a3b8;margin-bottom:12px;"></div>
+          <button type="button" class="btn-primary" id="printTicketBtn">🖨 Cetak Struk Tiket</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- AREA CETAK STRUK THERMAL (58mm / 80mm) -->
+  <div id="printTicketArea" class="print-only">
+    <div class="struk-title" id="printTitle">SISTEM ANTRIAN DIGITAL</div>
+    <div class="struk-sub">Nomor Antrian Anda</div>
+    <div class="struk-num" id="printNum">A-001</div>
+    <div class="struk-meta" id="printMeta"></div>
+    <div class="struk-foot">Harap menunggu hingga nomor Anda dipanggil. Terima kasih.</div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

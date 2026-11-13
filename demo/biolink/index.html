@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex Pratama — Bio Link & Mini Portfolio</title>
+  <meta name="description" content="Official bio link, portofolio, dan kontak Alex Pratama.">
+  <meta property="og:title" content="Alex Pratama — Bio Link & Mini Portfolio">
+  <meta property="og:description" content="Kunjungi portofolio, media sosial, dan kontak resmi.">
+  <meta property="og:image" content="assets/img/avatar.jpg">
+  <meta name="theme-color" content="#0d1117">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- BACKGROUND AMBIENT GLOW -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <!-- TOP BAR ACTIONS (THEME TOGGLE & SHARE) -->
+  <header class="top-bar container">
+    <div class="brand-chip">
+      <span class="dot-pulse"></span>
+      <span id="headerHandle">@alexpratama.dev</span>
+    </div>
+    <div class="top-actions">
+      <button id="themeToggleBtn" class="action-btn" aria-label="Ganti Tema" title="Ganti Mode Gelap/Terang">
+        <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button id="shareBtn" class="action-btn" aria-label="Bagikan Profil" title="Bagikan Link">
+        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="container main-content">
+
+    <!-- PROFILE HERO SECTION -->
+    <section class="profile-card">
+      <div class="avatar-wrapper">
+        <img id="profileAvatar" src="assets/img/avatar.jpg" alt="Foto Profil" class="avatar-img">
+        <span class="verified-badge" title="Terverifikasi">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </span>
+      </div>
+
+      <h1 class="profile-name" id="profileName">Alex Pratama</h1>
+      <p class="profile-title" id="profileTitle">Fullstack Developer & UI/UX Designer</p>
+
+      <div class="status-badge" id="statusBadge">
+        <span class="status-indicator"></span>
+        <span id="statusText">Tersedia untuk proyek freelance</span>
+      </div>
+
+      <p class="profile-bio" id="profileBio"></p>
+
+      <!-- SOCIAL ICONS BAR -->
+      <div class="social-bar" id="socialBar"></div>
+
+      <!-- V-CARD SAVE CONTACT BUTTON -->
+      <button id="saveContactBtn" class="btn-save-contact">
+        <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        <span>Simpan Kontak Saya (.vcf)</span>
+      </button>
+    </section>
+
+    <!-- MAIN LINKS LIST -->
+    <section class="links-section" aria-label="Daftar Tautan">
+      <div class="section-heading">
+        <h2>Tautan Utama</h2>
+      </div>
+      <div class="links-list" id="linksList"></div>
+    </section>
+
+    <!-- MINI PORTFOLIO SHOWCASE -->
+    <section class="portfolio-section" id="portfolioSection" aria-label="Portofolio Proyek">
+      <div class="section-heading">
+        <h2>Showcase Proyek</h2>
+        <p>Beberapa karya pilihan yang telah saya selesaikan</p>
+      </div>
+      <div class="portfolio-grid" id="portfolioGrid"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bio-footer">
+      <p class="powered-by">Dibuat dengan template <strong>AsetKode</strong> &bull; Zero Monthly Fees</p>
+      <p class="copyright">&copy; <span id="currentYear"></span> <span id="footerName">Alex Pratama</span></p>
+    </footer>
+
+  </main>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastNotification" class="toast-notification">Tautan berhasil disalin!</div>
+
+  <script src="config.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,4 @@
+LISENSI KOMERSIAL & PERSONAL
+==============================
+1. Anda bebas menggunakan dan memodifikasi source code ini untuk klinik, apotek, bengkel, toko, maupun proyek klien.
+2. Dilarang menjual ulang file mentah source code sebagai produk template/script saingan.

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nusantara Studio — Digital Product &amp; Web Engineering</title>
+  <meta name="description" content="Jasa pembuatan website company profile, toko online, dan aplikasi web bisnis profesional." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="brand">
+        <span class="brand-dot"></span>
+        <span id="brandName">Nusantara Studio</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#layanan">Layanan</a>
+        <a href="#portofolio">Portofolio</a>
+        <a href="#paket">Paket Harga</a>
+        <a href="#faq">FAQ</a>
+        <a href="#kontak">Kontak</a>
+      </nav>
+      <div class="nav-actions">
+        <button type="button" class="btn-icon" id="themeToggle" title="Ganti Mode Gelap/Terang" aria-label="Ganti Tema">◐</button>
+        <a href="#kontak" class="btn btn-primary btn-sm">Konsultasi Gratis</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <span class="hero-badge" id="heroBadge">TERSEDIA UNTUK PROYEK Q4 • RESPON &lt; 2 JAM</span>
+      <h1 class="hero-title" id="heroTitle">Kami Merancang Website &amp; Sistem Digital yang Meningkatkan Omzet Bisnis Anda</h1>
+      <p class="hero-sub" id="heroSubtitle">Solusi lengkap mulai dari Company Profile, Toko Online, hingga Aplikasi Web Custom dengan performa cepat, SEO-ready, dan desain modern.</p>
+      <div class="hero-cta">
+        <a href="#paket" class="btn btn-primary">Lihat Paket Harga →</a>
+        <a href="#portofolio" class="btn btn-outline">Eksplor Portofolio</a>
+      </div>
+      <div class="stats-grid" id="statsGrid"></div>
+    </div>
+  </section>
+
+  <section id="layanan" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">LAYANAN KAMI</span>
+        <h2>Solusi Digital End-to-End untuk Pertumbuhan Bisnis</h2>
+      </div>
+      <div class="grid-4" id="servicesGrid"></div>
+    </div>
+  </section>
+
+  <section id="portofolio" class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">PORTOFOLIO TERPILIH</span>
+        <h2>Karya Nyata yang Membantu Klien Berkembang</h2>
+        <div class="filter-row" id="portfolioFilter">
+          <button type="button" class="chip active" data-cat="all">Semua</button>
+          <button type="button" class="chip" data-cat="Web App">Web App</button>
+          <button type="button" class="chip" data-cat="Company Profile">Company Profile</button>
+          <button type="button" class="chip" data-cat="E-Commerce">E-Commerce</button>
+        </div>
+      </div>
+      <div class="grid-3" id="portfolioGrid"></div>
+    </div>
+  </section>
+
+  <section id="paket" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">INVESTASI TRANSPARAN</span>
+        <h2>Pilih Paket Sesuai Tahap Bisnis Anda</h2>
+      </div>
+      <div class="grid-3" id="packagesGrid"></div>
+    </div>
+  </section>
+
+  <section id="faq" class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Pertanyaan yang Sering Diajukan</h2>
+      </div>
+      <div class="faq-wrap" id="faqList"></div>
+    </div>
+  </section>
+
+  <section id="kontak" class="section">
+    <div class="container contact-grid">
+      <div>
+        <span class="eyebrow">MULAI PROYEK</span>
+        <h2 style="font-size:clamp(1.5rem,3vw,2rem);margin:10px 0 12px;">Diskusikan Kebutuhan Website Anda Sekarang</h2>
+        <p style="color:var(--text-muted);margin-bottom:20px;">Isi formulir singkat di samping untuk mengirim detail proyek Anda langsung via WhatsApp atau Email tim kami.</p>
+        <div class="contact-meta">
+          <div><strong>Email:</strong> <span id="contactEmail">halo@nusantarastudio.id</span></div>
+          <div><strong>Alamat:</strong> <span id="contactAddress">Jakarta Selatan</span></div>
+        </div>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <label>Nama / Perusahaan<input type="text" id="fName" required placeholder="Contoh: Budi / PT Maju" /></label>
+        <label>Layanan yang Dibutuhkan
+          <select id="fService">
+            <option>Website Company Profile</option>
+            <option>Toko Online &amp; Katalog</option>
+            <option>Aplikasi Web Custom</option>
+            <option>UI/UX Design</option>
+          </select>
+        </label>
+        <label>Ceritakan Singkat Kebutuhan Anda<textarea id="fMsg" rows="3" required placeholder="Contoh: Butuh web company profile 5 halaman..."></textarea></label>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Kirim via WhatsApp →</button>
+          <button type="button" id="sendEmailBtn" class="btn btn-outline">Kirim via Email</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© <span id="yearNow">2026</span> <strong id="footerBrand">Nusantara Studio</strong>. All rights reserved.</div>
+      <div id="footerTagline">Digital Product &amp; Web Engineering</div>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
