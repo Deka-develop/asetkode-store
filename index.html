@@ -4,7 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>AsetKode Store — Marketplace Source Code, Aplikasi Web &amp; Karya Digital Siap Pakai</title>
-  <meta name="description" content="Marketplace Source Code, Aplikasi Web, Script Otomatisasi Python, dan Template UI Siap Pakai dengan sistem Checkout QRIS &amp; Auto-Download 24/7." />
+  <meta name="description" content="Katalog Source Code Aplikasi Web, Kasir POS, Landing Page UMKM, dan Script Otomatisasi Python Siap Pakai dengan Interactive Live Demo langsung di browser." />
+  <meta name="theme-color" content="#09090b" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:title" content="AsetKode Store — Source Code &amp; Aplikasi Web Siap Pakai" />
+  <meta property="og:description" content="Coba langsung Interactive Live Demo di browser. 100% Open Source Code tanpa enkripsi, lengkap dengan database &amp; panduan instalasi." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "AsetKode Store",
+    "description": "Marketplace Source Code, Aplikasi Web, Script Otomatisasi Python, dan Template UI Siap Pakai.",
+    "email": "dekamayooo@gmail.com",
+    "priceRange": "Rp 39.000 - Rp 249.000"
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
@@ -19,7 +35,7 @@
   <div class="promo-ribbon">
     <div class="container promo-ribbon-inner">
       <span class="promo-pill">PROMO SPESIAL</span>
-      <span>Diskon hingga <strong>50%</strong> + Ekstra Diskon Bundling 20% otomatis di Keranjang • Terhubung Real-Time dengan Database <strong>asetkode.blogspot.com</strong></span>
+      <span>Diskon hingga <strong>50%</strong> + Ekstra Diskon Bundling 20% otomatis di Keranjang • Order Resmi via <strong data-order-email>dekamayooo@gmail.com</strong></span>
     </div>
   </div>
 
@@ -34,8 +50,8 @@
             <line x1="14" y1="4" x2="10" y2="20"></line>
           </svg>
         </span>
-        <span>AsetKode</span>
-        <span class="brand-badge">PRO STORE</span>
+        <span data-brand-name>AsetKode</span>
+        <span class="brand-badge" data-brand-badge>PRO STORE</span>
       </a>
 
       <div class="nav-search-wrap">
@@ -47,10 +63,11 @@
       </div>
 
       <nav class="nav-menu">
-        <a href="#katalog">Katalog Produk</a>
-        <a href="#bundleDeal">Paket Bundling</a>
-        <a href="#keunggulan">Keunggulan</a>
-        <a href="https://asetkode.blogspot.com/" target="_blank" rel="noopener">Blog &amp; Artikel ↗</a>
+        <a href="#katalog">Katalog</a>
+        <a href="#bundleDeal">Bundling</a>
+        <a href="#cara-order">Cara Order</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://asetkode.blogspot.com/" target="_blank" rel="noopener" data-blogger-link>Blog ↗</a>
       </nav>
 
       <div class="nav-actions">
@@ -90,9 +107,9 @@
         <div class="status-pill">
           <span class="status-pill-badge">
             <span class="pulse-dot"></span>
-            HEADLESS CLOUD CMS
+            LIVE DEMO READY
           </span>
-          <span>Checkout QRIS &amp; Auto-Download 24/7 Tanpa Chat Admin</span>
+          <span id="heroStatusText">Coba Aplikasi di Browser • Order Cepat via Email</span>
         </div>
 
         <h1 class="hero-title">
@@ -100,7 +117,7 @@
         </h1>
 
         <p class="hero-desc">
-          Eksplorasi koleksi aplikasi web siap pakai, script otomatisasi Python, dan UI template modern. Coba langsung <strong>Interactive Live Demo</strong> di browser Anda, masukkan keranjang, dan unduh file <code>.ZIP</code> detik itu juga.
+          Eksplorasi koleksi aplikasi web siap pakai, script otomatisasi Python, dan UI template modern. Coba langsung <strong>Interactive Live Demo</strong> di browser Anda sebelum membeli, lalu terima paket file <code>.ZIP</code> lengkap tanpa enkripsi.
         </p>
 
         <div class="hero-cta-row">
@@ -114,12 +131,12 @@
             <div class="metric-label">Full Source Code Tanpa Enkripsi</div>
           </div>
           <div class="metric-card">
-            <div class="metric-val">&lt; 5 Detik</div>
-            <div class="metric-label">Link Download Otomatis ke Email</div>
+            <div class="metric-val">Direct .ZIP</div>
+            <div class="metric-label">Dikirim Rapi ke Email Pembeli</div>
           </div>
           <div class="metric-card">
-            <div class="metric-val">★ 4.9 / 5.0</div>
-            <div class="metric-label">Rating Developer &amp; UMKM</div>
+            <div class="metric-val">Komersial</div>
+            <div class="metric-label">Bebas Dipakai Usaha &amp; Klien</div>
           </div>
         </div>
       </div>
@@ -159,14 +176,14 @@
                 <div id="roiCustomTime" style="font-size:0.72rem; color:#a1a1aa;">Waktu: 28 Hari Kerja</div>
               </div>
               <div class="roi-card best">
-                <div style="font-size:0.72rem; color:#52525b; font-weight:700;">Pakai Source Code AsetKode</div>
-                <div id="roiAsetPrice" style="font-size:1.05rem; font-weight:800; color:#09090b; font-family:var(--font-mono); margin:4px 0;">Rp 149.000</div>
+                <div style="font-size:0.72rem; color:#52525b; font-weight:700;">Pakai Source Code <span data-brand-name>AsetKode</span></div>
+                <div id="roiAsetPrice" style="font-size:1.05rem; font-weight:800; color:#09090b; font-family:var(--font-mono); margin:4px 0;">Rp 69.000</div>
                 <div style="font-size:0.72rem; color:#18181b; font-weight:600;">Waktu: 10 Menit Jalan</div>
               </div>
             </div>
 
             <div class="roi-savings-banner">
-              ✓ <span id="roiSavingsText">Anda Hemat Rp 4.351.000 (96%) &amp; 28 Hari Coding!</span>
+              ✓ <span id="roiSavingsText">Anda Hemat Rp 4.431.000 (98%) &amp; 28 Hari Coding!</span>
             </div>
           </div>
 
@@ -270,16 +287,16 @@
     <div class="product-grid" id="productGrid"></div>
 
     <!-- BENTO ADVANTAGES SECTION -->
-    <section id="keunggulan" style="margin-top:64px;">
-      <div style="text-align:center; max-width:620px; margin:0 auto 24px;">
-        <span class="brand-badge" style="font-size:0.72rem; padding:4px 12px;">KENAPA ASETKODE?</span>
-        <h2 style="font-size:clamp(1.35rem, 2.8vw, 1.8rem); font-weight:800; margin-top:10px; letter-spacing:-0.03em;">Dirancang untuk Kecepatan Produksi Developer &amp; Bisnis</h2>
+    <section id="keunggulan" class="section-block">
+      <div class="section-header">
+        <span class="brand-badge" style="font-size:0.72rem; padding:4px 12px;">KENAPA <span data-brand-name>ASETKODE</span>?</span>
+        <h2>Dirancang untuk Kecepatan Produksi Developer &amp; Bisnis</h2>
       </div>
       <div class="bento-grid">
         <div class="bento-box">
           <div style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; margin-bottom:10px; color:var(--text-muted);">01 / LIVE SIMULATOR</div>
           <h3 style="font-size:1rem; font-weight:800; margin-bottom:6px;">Interactive Live Demo di Browser</h3>
-          <p style="font-size:0.85rem; color:var(--text-secondary);">Uji coba simulasi antarmuka aplikasi (Kasir POS, Dashboard, Toko Online, &amp; Bot) langsung di halaman ini dalam mode Desktop, Tablet, maupun HP.</p>
+          <p style="font-size:0.85rem; color:var(--text-secondary);">Uji coba langsung antarmuka aplikasi (Kasir POS, UMKM Cafe, Undangan Digital, &amp; Bot) di halaman ini dalam mode Desktop, Tablet, maupun HP.</p>
         </div>
         <div class="bento-box">
           <div style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; margin-bottom:10px; color:var(--text-muted);">02 / SMART CART</div>
@@ -289,7 +306,111 @@
         <div class="bento-box">
           <div style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; margin-bottom:10px; color:var(--text-muted);">03 / UNLOCKED CODE</div>
           <h3 style="font-size:1rem; font-weight:800; margin-bottom:6px;">100% Clean Code Tanpa Enkripsi</h3>
-          <p style="font-size:0.85rem; color:var(--text-secondary);">Seluruh file dikirim lengkap bersama database <code>.sql</code> dan panduan instalasi PDF. Bebas dimodifikasi untuk proyek klien maupun bisnis sendiri.</p>
+          <p style="font-size:0.85rem; color:var(--text-secondary);">Seluruh file dikirim lengkap bersama struktur folder rapi, sampel data, dan panduan instalasi Bahasa Indonesia. Bebas dipakai untuk proyek klien.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO ORDER: 3 STEPS -->
+    <section id="cara-order" class="section-block">
+      <div class="section-header">
+        <span class="brand-badge" style="font-size:0.72rem; padding:4px 12px;">ALUR PEMESANAN</span>
+        <h2>3 Langkah Praktis Mendapatkan Source Code</h2>
+        <p>Transparan, tanpa biaya berlangganan bulanan, dan langsung siap dijalankan di perangkat Anda.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-num">01</span>
+          <h3>Coba Demo &amp; Pilih Produk</h3>
+          <p>Klik <strong>Live Demo</strong> pada produk untuk mencoba alur aplikasi secara langsung. Tambahkan 2+ produk ke keranjang untuk diskon bundling 20%.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">02</span>
+          <h3>Kirim Order &amp; Pembayaran</h3>
+          <p>Klik <strong>Beli / Checkout</strong> untuk membuka formulir order email otomatis ke <strong data-order-email>dekamayooo@gmail.com</strong> dan selesaikan pembayaran sesuai instruksi.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">03</span>
+          <h3>Terima File .ZIP &amp; Jalankan</h3>
+          <p>Paket file <code>.ZIP</code> lengkap beserta panduan instalasi dikirim ke email Anda. Tinggal ekstrak, ikuti panduan 5 menit, dan aplikasi langsung siap pakai.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOCIAL PROOF / USE CASES -->
+    <section id="testimoni" class="section-block">
+      <div class="section-header">
+        <span class="brand-badge" style="font-size:0.72rem; padding:4px 12px;">STUDI KASUS PENGGUNA</span>
+        <h2>Cocok untuk UMKM, Freelancer, &amp; Developer</h2>
+      </div>
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <div>
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote" style="margin-top:10px;">“Aplikasi Kasir POS Live Excel-nya langsung bisa dibuka di laptop toko tanpa install XAMPP atau setting server ribet. Stok harian juga otomatis rapi di file Excel.”</p>
+          </div>
+          <div class="testimonial-author">
+            <div class="testimonial-name">Rizky Pratama</div>
+            <div class="testimonial-role">Pemilik Toko Retail &amp; Minimarket</div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div>
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote" style="margin-top:10px;">“Template Landing Page UMKM &amp; Undangan Digital sangat membantu mempercepat pengerjaan proyek klien. Struktur kodenya bersih dan mudah di-custom.”</p>
+          </div>
+          <div class="testimonial-author">
+            <div class="testimonial-name">Dimas Nugroho</div>
+            <div class="testimonial-role">Freelance Web Developer</div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div>
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote" style="margin-top:10px;">“Sangat terbantu karena ada Live Demo sebelum beli. Kita bisa cek dulu tampilan di HP maupun desktop supaya yakin sesuai kebutuhan bisnis.”</p>
+          </div>
+          <div class="testimonial-author">
+            <div class="testimonial-name">Nadia Kusuma</div>
+            <div class="testimonial-role">Operasional Bisnis Kuliner</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE FAQ -->
+    <section id="faq" class="section-block">
+      <div class="section-header">
+        <span class="brand-badge" style="font-size:0.72rem; padding:4px 12px;">FAQ</span>
+        <h2>Pertanyaan yang Sering Diajukan</h2>
+      </div>
+      <div class="faq-list" id="faqList">
+        <div class="faq-item open">
+          <button type="button" class="faq-q">
+            <span>Apakah source code 100% terbuka dan bebas diedit?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Ya. Seluruh source code dikirim dalam format terbuka tanpa enkripsi (tidak dikunci ionCube/obfuscator), sehingga Anda bebas mengubah logo, warna, fitur, maupun menyesuaikannya untuk kebutuhan sendiri atau klien.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-q">
+            <span>Apakah pemula tanpa keahlian coding bisa menggunakannya?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Bisa. Produk unggulan seperti Aplikasi Kasir POS sudah Zero-Config (cukup klik file pembuka langsung jalan di browser), dan setiap paket disertai panduan instalasi langkah demi langkah dalam Bahasa Indonesia.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-q">
+            <span>Bagaimana cara membeli dan menerima file produknya?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Klik tombol <strong>Beli Instan</strong> atau checkout lewat keranjang belanja. Anda akan melihat tombol <strong>Kirim via Gmail Web</strong> / <strong>Buka Aplikasi Email</strong> dengan format order otomatis ke <strong data-order-email>dekamayooo@gmail.com</strong>. Setelah pembayaran terkonfirmasi, file <code>.ZIP</code> langsung dikirim ke email Anda.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-q">
+            <span>Apakah ada biaya langganan bulanan atau tahunan?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">Tidak ada. Anda cukup membayar <strong>1 kali saja</strong> untuk memiliki source code dan lisensi pemakaian selamanya (personal maupun komersial).</div>
         </div>
       </div>
     </section>
@@ -297,12 +418,38 @@
 
   <!-- FOOTER -->
   <footer class="site-footer">
-    <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-      <div>
-        <strong>AsetKode Pro Storefront</strong> — Powered by Headless GitHub Pages × <a href="https://asetkode.blogspot.com/" target="_blank" rel="noopener" style="text-decoration:underline; font-weight:700;">Blogger Cloud API</a>.
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4 data-brand-name>AsetKode</h4>
+          <p>Katalog source code aplikasi web, script otomatisasi, dan template UI modern siap pakai untuk mempercepat proyek developer dan digitalisasi UMKM.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigasi Cepat</h4>
+          <ul class="footer-links">
+            <li><a href="#katalog">Katalog Produk</a></li>
+            <li><a href="#bundleDeal">Paket Bundling VIP</a></li>
+            <li><a href="#cara-order">Cara Pemesanan</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="https://asetkode.blogspot.com/" target="_blank" rel="noopener" data-blogger-link>Blog &amp; Artikel ↗</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Kontak &amp; Order Resmi</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:dekamayooo@gmail.com" data-order-mailto data-order-email>dekamayooo@gmail.com</a></li>
+            <li><span>Lisensi: Personal &amp; Komersial</span></li>
+            <li><span>Format: Full Source Code (.ZIP)</span></li>
+          </ul>
+        </div>
       </div>
-      <div>
-        Checkout Otomatis 24/7 (QRIS • Virtual Account • E-Wallet)
+      <div class="footer-bottom">
+        <div>
+          © <span id="footerYear">2026</span> <strong data-brand-name>AsetKode</strong>. All rights reserved.
+        </div>
+        <div>
+          100% Open Source Code • Sekali Bayar Tanpa Langganan
+        </div>
       </div>
     </div>
   </footer>
@@ -360,7 +507,7 @@
           <span style="font-size:0.86rem; color:var(--text-secondary);">Total Pembayaran:</span>
           <span id="cartTotalPrice" style="font-size:1.35rem; font-weight:800; color:var(--text-primary); font-family:var(--font-mono);">Rp 0</span>
         </div>
-        <button type="button" class="btn btn-primary" id="checkoutCartBtn" style="width:100%; padding:13px;">Checkout Sekarang (QRIS / VA / E-Wallet)</button>
+        <button type="button" class="btn btn-primary" id="checkoutCartBtn" style="width:100%; padding:13px;">Lanjut Pemesanan Sekarang →</button>
       </div>
     </aside>
   </div>
@@ -369,20 +516,22 @@
   <div class="backdrop" id="checkoutModal">
     <div class="modal-window" style="max-width:740px; height:86vh;">
       <div class="modal-top">
-        <div class="modal-top-title" id="checkoutModalTitle">Checkout Pembayaran Instan</div>
+        <div class="modal-top-title" id="checkoutModalTitle">Detail Pemesanan Produk</div>
         <button type="button" class="close-x" id="closeCheckoutBtn">×</button>
       </div>
       <div style="padding:12px 20px; background:var(--bg-elevated); border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; font-size:0.82rem;">
-        <span>Link download file <code>.ZIP</code> otomatis dikirim ke email setelah lunas</span>
+        <span id="checkoutModalNotice">Paket file <code>.ZIP</code> + panduan instalasi dikirim ke email Anda setelah pembayaran</span>
         <strong id="checkoutModalPrice" style="color:var(--text-primary); font-family:var(--font-mono);"></strong>
       </div>
       <iframe id="checkoutIframe" src="about:blank" style="width:100%; flex:1; border:none; background:#ffffff;" title="Checkout Payment"></iframe>
       <div class="modal-top" style="font-size:0.8rem;">
-        <span>Jika jendela pembayaran tidak terbuka di dalam frame:</span>
-        <a href="#" id="checkoutExternalLink" target="_blank" rel="noopener" class="btn btn-primary" style="padding:7px 14px; font-size:0.78rem;">Buka Halaman Pembayaran Penuh ↗</a>
+        <span>Butuh layar penuh atau membuka di tab baru?</span>
+        <a href="#" id="checkoutExternalLink" target="_blank" rel="noopener" class="btn btn-primary" style="padding:7px 14px; font-size:0.78rem;">Buka di Tab Baru ↗</a>
       </div>
     </div>
   </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
   <script src="app.js"></script>
 </body>

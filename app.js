@@ -6,7 +6,19 @@
  * - Interactive ROI Calculator & Instant QRIS/VA Checkout Simulator
  */
 
-const BLOGGER_ORIGIN = 'https://asetkode.blogspot.com';
+// ================= 0. CENTRALIZED SITE & BRAND CONFIGURATION =================
+// Ubah konfigurasi di bawah ini saat ganti nama brand, pasang domain baru, atau aktifkan payment gateway.
+const SITE_CONFIG = {
+  brandName: 'AsetKode',
+  brandBadge: 'PRO STORE',
+  orderEmail: 'dekamayooo@gmail.com',
+  paymentMode: 'email', // 'email' (order via email saat ini) | 'gateway' (otomatis QRIS/Mayar setelah pasang domain)
+  bloggerOrigin: 'https://asetkode.blogspot.com',
+  bundlePrice: 'Rp 249.000',
+  bundlePriceNum: 249000
+};
+
+const BLOGGER_ORIGIN = SITE_CONFIG.bloggerOrigin;
 const STORAGE_CART_KEY = 'asetkode_pro_cart_v1';
 const STORAGE_THEME_KEY = 'asetkode_bw_theme_v2';
 
@@ -499,6 +511,7 @@ function renderProductsGrid() {
     .map((p) => {
       const disc = getDiscountPercent(p.price, p.oldPrice);
       const inCart = cartState.some((c) => c.id === p.id);
+      const hasRealDemo = Boolean(p.demoUrl && !p.demoUrl.startsWith('http'));
       const stackChips = p.stack
         .split('+')
         .map((s) => s.trim())
@@ -517,8 +530,9 @@ function renderProductsGrid() {
           </div>
 
           <div class="card-thumb">
-            <img src="${p.thumbnailUrl}" alt="${p.title}" loading="lazy" />
+            <img src="${p.thumbnailUrl}" alt="${p.title}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=80';" />
             ${disc > 0 ? `<span class="discount-pill">HEMAT ${disc}%</span>` : ''}
+            ${hasRealDemo ? `<span class="live-app-pill">● Live App</span>` : ''}
             <div class="thumb-tags">
               ${p.categories
                 .slice(0, 3)
@@ -935,6 +949,7 @@ window.toggleCartItemById = function (productId) {
   const existingIdx = cartState.findIndex((c) => c.id === productId);
   if (existingIdx >= 0) {
     cartState.splice(existingIdx, 1);
+    showToast('Produk dihapus dari keranjang.');
   } else {
     cartState.push({
       id: prod.id,
@@ -944,6 +959,7 @@ window.toggleCartItemById = function (productId) {
       stack: prod.stack,
       paymentUrl: prod.paymentUrl
     });
+    showToast('Ditambahkan ke keranjang!');
     openCartDrawer();
   }
   saveCartToStorage();
@@ -951,6 +967,7 @@ window.toggleCartItemById = function (productId) {
 
 window.removeCartItemById = function (productId) {
   cartState = cartState.filter((c) => c.id !== productId);
+  showToast('Item dihapus dari keranjang.');
   saveCartToStorage();
 };
 
@@ -959,13 +976,18 @@ function addAllBundleToCart() {
     {
       id: 'vip-bundle-all',
       title: 'VIP All-Access Developer Pass (Seluruh 6+ Source Code & Template Lengkap)',
-      price: 'Rp 249.000',
-      priceNum: 249000,
+      price: SITE_CONFIG.bundlePrice,
+      priceNum: SITE_CONFIG.bundlePriceNum,
       stack: 'All-In-One Pack (Hemat 65%)',
-      paymentUrl: 'https://example.com/checkout/vip-all-access-bundle'
+      paymentUrl: buildOrderMailtoUrl(
+        'VIP All-Access Developer Pass (Seluruh Katalog)',
+        SITE_CONFIG.bundlePrice,
+        'Paket Bundling Lengkap'
+      )
     }
   ];
   saveCartToStorage();
+  showToast('Paket VIP All-Access masuk ke keranjang!');
   openCartDrawer();
 }
 
@@ -1039,6 +1061,30 @@ window.openInstantCheckoutById = function (productId) {
   });
 };
 
+function buildOrderMailtoUrl(title, price, details) {
+  const email = SITE_CONFIG.orderEmail;
+  const subject = `Order ${title} (${price})`;
+  const body =
+    `Halo Admin ${SITE_CONFIG.brandName},\n\n` +
+    `Saya ingin membeli:\n` +
+    `- Produk: ${title}\n` +
+    (details ? `- Rincian: ${details}\n` : '') +
+    `- Total Harga: ${price}\n\n` +
+    `Mohon info nomor rekening / QRIS untuk pembayaran. Terima kasih.`;
+  return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function buildGmailComposeUrl(mailtoUrl) {
+  const raw = String(mailtoUrl || '');
+  const withoutScheme = raw.replace(/^mailto:/i, '');
+  const qIdx = withoutScheme.indexOf('?');
+  const email = qIdx >= 0 ? withoutScheme.slice(0, qIdx) : withoutScheme;
+  const params = new URLSearchParams(qIdx >= 0 ? withoutScheme.slice(qIdx + 1) : '');
+  const subject = params.get('subject') || `Order ${SITE_CONFIG.brandName}`;
+  const body = params.get('body') || '';
+  return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
 function launchCheckoutGateway(order) {
   const modal = document.getElementById('checkoutModal');
   const titleEl = document.getElementById('checkoutModalTitle');
@@ -1046,22 +1092,34 @@ function launchCheckoutGateway(order) {
   const iframe = document.getElementById('checkoutIframe');
   const extLink = document.getElementById('checkoutExternalLink');
 
-  if (titleEl) titleEl.textContent = `Checkout Instan: ${order.title}`;
+  if (titleEl) titleEl.textContent = `Pemesanan: ${order.title}`;
   if (priceEl) priceEl.textContent = order.price;
-  if (extLink) extLink.href = order.paymentUrl || '#';
 
   const isPlaceholder = !order.paymentUrl || order.paymentUrl.includes('example.com');
-  const isMailto = !isPlaceholder && order.paymentUrl.startsWith('mailto:');
+  const forceEmailMode = SITE_CONFIG.paymentMode === 'email';
+  const effectiveUrl =
+    forceEmailMode || isPlaceholder
+      ? (order.paymentUrl && order.paymentUrl.startsWith('mailto:')
+          ? order.paymentUrl
+          : buildOrderMailtoUrl(order.title, order.price, order.stack))
+      : order.paymentUrl;
+
+  const isMailto = effectiveUrl.startsWith('mailto:');
+  if (extLink) {
+    extLink.href = isMailto ? buildGmailComposeUrl(effectiveUrl) : effectiveUrl;
+    extLink.textContent = isMailto ? 'Buka di Gmail Web ↗' : 'Buka Halaman Pembayaran Penuh ↗';
+  }
+
   if (iframe) {
-    if (isPlaceholder) {
+    if (isMailto) {
+      iframe.removeAttribute('src');
+      iframe.srcdoc = buildEmailOrderHTML({ ...order, paymentUrl: effectiveUrl });
+    } else if (isPlaceholder) {
       iframe.removeAttribute('src');
       iframe.srcdoc = buildBuiltInPaymentGatewayHTML(order);
-    } else if (isMailto) {
-      iframe.removeAttribute('src');
-      iframe.srcdoc = buildEmailOrderHTML(order);
     } else {
       iframe.removeAttribute('srcdoc');
-      iframe.src = order.paymentUrl;
+      iframe.src = effectiveUrl;
     }
   }
 
@@ -1188,8 +1246,8 @@ const ROI_DATA = {
   pos: {
     customCost: 'Rp 4.500.000',
     customTime: 'Waktu: 28 Hari Kerja',
-    asetPrice: 'Rp 149.000',
-    savingsText: 'Anda Hemat Rp 4.351.000 (96%) & 28 Hari Coding!'
+    asetPrice: 'Rp 69.000',
+    savingsText: 'Anda Hemat Rp 4.431.000 (98%) & 28 Hari Coding!'
   },
   ecom: {
     customCost: 'Rp 5.800.000',
@@ -1265,9 +1323,57 @@ function initThemeToggle() {
   }
 }
 
+function showToast(message) {
+  const stack = document.getElementById('toastStack');
+  if (!stack) return;
+  const el = document.createElement('div');
+  el.className = 'toast-item';
+  el.textContent = message;
+  stack.appendChild(el);
+  setTimeout(() => {
+    el.style.opacity = '0';
+    el.style.transition = 'opacity 0.2s ease';
+    setTimeout(() => el.remove(), 220);
+  }, 2400);
+}
+
+function applySiteBranding() {
+  document.querySelectorAll('[data-brand-name]').forEach((el) => {
+    el.textContent = SITE_CONFIG.brandName;
+  });
+  document.querySelectorAll('[data-brand-badge]').forEach((el) => {
+    el.textContent = SITE_CONFIG.brandBadge;
+  });
+  document.querySelectorAll('[data-order-email]').forEach((el) => {
+    el.textContent = SITE_CONFIG.orderEmail;
+  });
+  document.querySelectorAll('[data-order-mailto]').forEach((el) => {
+    el.setAttribute('href', `mailto:${SITE_CONFIG.orderEmail}`);
+  });
+  document.querySelectorAll('[data-blogger-link]').forEach((el) => {
+    el.setAttribute('href', SITE_CONFIG.bloggerOrigin + '/');
+  });
+  const yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+}
+
+function initFaqAccordion() {
+  document.querySelectorAll('#faqList .faq-q').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      if (!item) return;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('#faqList .faq-item').forEach((el) => el.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  applySiteBranding();
   initThemeToggle();
   initHeroStudioAndROI();
+  initFaqAccordion();
   loadCartFromStorage();
   renderProductsGrid();
   syncFromBloggerCloud();
@@ -1324,12 +1430,17 @@ document.addEventListener('DOMContentLoaded', () => {
     checkoutCartBtn.addEventListener('click', () => {
       if (!cartState.length) return;
       const totalStr = document.getElementById('cartTotalPrice').textContent;
-      const titles = cartState.map((c) => c.title).join(' + ');
+      const titles = cartState.map((c) => `${c.title} (${c.price})`).join(', ');
+      const orderTitle =
+        cartState.length === 1 ? cartState[0].title : `Paket Bundling (${cartState.length} Produk)`;
       closeModal('cartBackdrop');
       launchCheckoutGateway({
-        title: cartState.length === 1 ? cartState[0].title : `Paket Bundling (${cartState.length} Produk)`,
+        title: orderTitle,
         price: totalStr,
-        paymentUrl: cartState.length === 1 ? cartState[0].paymentUrl : 'https://example.com/checkout/cart-bundle',
+        paymentUrl:
+          cartState.length === 1
+            ? cartState[0].paymentUrl
+            : buildOrderMailtoUrl(orderTitle, totalStr, titles),
         stack: titles
       });
     });
