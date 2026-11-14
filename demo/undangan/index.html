@@ -52,6 +52,9 @@
     <header class="section hero-wedding">
       <div class="hero-flower-top"></div>
       <div class="container text-center">
+        <div class="hero-arch-frame">
+          <img id="heroCoupleImg" src="assets/img/wedding-hero.jpg" alt="Mempelai Bahagia">
+        </div>
         <p class="eyebrow-wedding">WALIMATUL 'URS</p>
         <h2 class="hero-names"><span id="heroPria">Rizky</span> <span class="amp">&amp;</span> <span id="heroWanita">Amanda</span></h2>
         <p class="hero-date" id="heroDateLabel">25 – 26 Desember 2026</p>
@@ -64,7 +67,7 @@
     </header>
 
     <!-- SECTION MEMPELAI -->
-    <section class="section couple-section">
+    <section class="section couple-section" id="coupleSection">
       <div class="container">
         <div class="section-title text-center">
           <span class="badge-floral">Assalamu'alaikum Wr. Wb.</span>
@@ -101,7 +104,7 @@
     </section>
 
     <!-- SECTION HITUNG MUNDUR & JADWAL ACARA -->
-    <section class="section event-section">
+    <section class="section event-section" id="eventSection">
       <div class="container text-center">
         <div class="section-title">
           <span class="badge-floral">Save The Date</span>
@@ -118,6 +121,9 @@
           <div class="count-item"><span id="cdMinutes">00</span><small>Menit</small></div>
           <div class="count-sep">:</div>
           <div class="count-item"><span id="cdSeconds">00</span><small>Detik</small></div>
+        </div>
+        <div style="margin-top: 16px;">
+          <a id="saveCalBtn" href="#" target="_blank" rel="noopener" class="btn-save-cal">📅 Simpan ke Google Calendar</a>
         </div>
 
         <!-- JADWAL DUA ACARA -->
@@ -169,7 +175,7 @@
     </section>
 
     <!-- SECTION GALERI PREWEDDING -->
-    <section class="section gallery-section">
+    <section class="section gallery-section" id="gallerySection">
       <div class="container text-center">
         <div class="section-title">
           <span class="badge-floral">Moments</span>
@@ -200,7 +206,7 @@
     </section>
 
     <!-- SECTION RSVP & WISHES -->
-    <section class="section rsvp-section">
+    <section class="section rsvp-section" id="rsvpSection">
       <div class="container narrow-container">
         <div class="section-title text-center">
           <span class="badge-floral">RSVP & Ucapan</span>
@@ -259,6 +265,22 @@
 
   </main>
 
+  <!-- FLOATING BOTTOM GLASS NAVIGATION -->
+  <nav class="floating-nav" id="floatingNav" aria-label="Navigasi Undangan">
+    <a href="#coupleSection">Mempelai</a>
+    <a href="#eventSection">Acara</a>
+    <a href="#storySection">Kisah</a>
+    <a href="#gallerySection">Galeri</a>
+    <a href="#rsvpSection">RSVP</a>
+  </nav>
+
+  <!-- GALLERY LIGHTBOX MODAL -->
+  <div id="galleryLightbox" class="lightbox-modal" aria-hidden="true">
+    <button type="button" id="lightboxClose" class="lightbox-close" aria-label="Tutup">×</button>
+    <img id="lightboxImg" src="" alt="Galeri Prewedding">
+    <div id="lightboxCaption" class="lightbox-caption"></div>
+  </div>
+
   <!-- TOAST NOTIFICATION COPY REKENING -->
   <div id="copyToast" class="copy-toast">Nomor rekening berhasil disalin!</div>
 
@@ -266,3 +288,4 @@
   <script src="assets/js/main.js"></script>
 </body>
 </html>
+

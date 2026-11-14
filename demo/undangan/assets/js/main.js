@@ -5,7 +5,7 @@
 
 (function () {
   'use strict';
-  const C = window.CONFIG || {};
+  const C = typeof CONFIG !== 'undefined' ? CONFIG : (window.CONFIG || {});
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -30,6 +30,15 @@
 
   if (C.panggilanPria && C.panggilanWanita) {
     document.title = `The Wedding of ${C.panggilanPria} & ${C.panggilanWanita}`;
+  }
+  if (C.fotoHero && $('#heroCoupleImg')) {
+    $('#heroCoupleImg').src = C.fotoHero;
+  }
+  if ($('#saveCalBtn')) {
+    const title = encodeURIComponent(`Pernikahan ${C.panggilanPria || ''} & ${C.panggilanWanita || ''}`);
+    const loc = encodeURIComponent((C.resepsi && C.resepsi.tempat ? C.resepsi.tempat + ', ' : '') + ((C.resepsi && C.resepsi.alamat) || ''));
+    const dt = (C.tanggalTargetCountdown || '2026-12-25T08:00:00').replace(/[-:]/g, '');
+    $('#saveCalBtn').href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dt}/${dt}&location=${loc}`;
   }
 
   $('#quoteText').textContent = C.kutipanAyat || '';
@@ -279,4 +288,43 @@
     showToast('Konfirmasi Anda berhasil dikirim!');
   });
 
+  /* ---------- LIGHTBOX GALERI FOTO ---------- */
+  const lb = $('#galleryLightbox');
+  const lbImg = $('#lightboxImg');
+  const lbCap = $('#lightboxCaption');
+  const lbClose = $('#lightboxClose');
+  if (lb && gallery) {
+    gallery.addEventListener('click', (e) => {
+      const card = e.target.closest('.gallery-card');
+      if (!card) return;
+      const img = card.querySelector('img');
+      const cap = card.querySelector('.gallery-caption');
+      if (img) {
+        lbImg.src = img.src;
+        lbCap.textContent = cap ? cap.textContent : '';
+        lb.classList.add('open');
+      }
+    });
+    const closeLb = () => lb.classList.remove('open');
+    lbClose?.addEventListener('click', closeLb);
+    lb.addEventListener('click', (e) => { if (e.target === lb) closeLb(); });
+  }
+
+  /* ---------- SCROLL REVEAL HALUS ---------- */
+  if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          en.target.classList.add('is-visible');
+          obs.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    $$('.section').forEach((sec) => {
+      sec.classList.add('reveal-sec');
+      obs.observe(sec);
+    });
+  }
+
 })();
+

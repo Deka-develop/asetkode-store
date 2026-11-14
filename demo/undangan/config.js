@@ -82,3 +82,4 @@ const CONFIG = {
   // ---------- TEMA WARNA ----------
   warnaAksen: '#8c6b4e' // Warna nuansa earth tone / champagne gold elegan
 };
+
