@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistem Absensi QR Code Siswa &amp; Karyawan</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="qr-badge">QR</span>
+      <div>
+        <strong>AbsensiQR Pro</strong>
+        <small>Sistem Kehadiran Siswa &amp; Karyawan Real-Time</small>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button type="button" class="tab active" data-tab="scan">Scan Absensi</button>
+      <button type="button" class="tab" data-tab="members">Kartu QR Anggota</button>
+      <button type="button" class="tab" data-tab="report">Rekap &amp; Export</button>
+    </nav>
+    <div class="clock" id="liveClock">--:--:--</div>
+  </header>
+
+  <main class="wrap">
+    <!-- TAB 1: SCAN ABSENSI -->
+    <section id="tab-scan" class="panel active">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Simulasi Scan / Input ID QR</h2>
+          <p class="muted">Pilih anggota untuk simulasi scan kartu QR atau ketik ID (contoh: <code>EMP-001</code>), lalu klik Catat Kehadiran.</p>
+          <div class="scan-box">
+            <input type="text" id="scanInput" placeholder="Masukkan / Scan Kode ID (misal: EMP-001)" />
+            <button type="button" class="btn-primary" id="scanSubmitBtn">Catat Absensi</button>
+          </div>
+          <div class="quick-list" id="quickScanBtns"></div>
+          <div id="scanFeedback" class="feedback" style="display:none;"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <h2>Kehadiran Hari Ini</h2>
+            <span class="pill" id="todayCountPill">0 Hadir</span>
+          </div>
+          <div class="att-list" id="todayAttList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: KARTU QR ANGGOTA -->
+    <section id="tab-members" class="panel">
+      <div class="card" style="margin-bottom:18px;">
+        <h2>Tambah Siswa / Karyawan Baru</h2>
+        <form id="addMemberForm" class="inline-form">
+          <input type="text" id="mName" placeholder="Nama Lengkap" required />
+          <input type="text" id="mRole" placeholder="Divisi / Kelas (misal: XII IPA 1 / Kasir)" required />
+          <button type="submit" class="btn-primary">+ Buat Kartu QR</button>
+        </form>
+      </div>
+      <div class="qr-grid" id="qrCardsGrid"></div>
+    </section>
+
+    <!-- TAB 3: REKAP & EXPORT -->
+    <section id="tab-report" class="panel">
+      <div class="card">
+        <div class="card-head">
+          <h2>Rekapitulasi Kehadiran</h2>
+          <button type="button" class="btn-primary" id="exportCsvBtn">Export CSV / Excel</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Nama</th><th>Divisi/Kelas</th><th>Jam Masuk</th><th>Status</th></tr>
+            </thead>
+            <tbody id="reportTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

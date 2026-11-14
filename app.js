@@ -15,7 +15,7 @@ const SITE_CONFIG = {
   paymentMode: 'email', // 'email' (order via email saat ini) | 'gateway' (otomatis QRIS/Mayar setelah pasang domain)
   bloggerOrigin: 'https://asetkode.blogspot.com',
   onlyReadyProducts: true, // true = hanya tampilkan produk yang sudah punya paket .ZIP & demo siap kirim
-  readyIds: ['prod-1', 'prod-2', 'prod-9', 'prod-14', 'prod-15', 'prod-16', 'prod-17'],
+  readyIds: ['prod-1', 'prod-2', 'prod-9', 'prod-11', 'prod-14', 'prod-15', 'prod-16', 'prod-17'],
   bundlePrice: 'Rp 199.000',
   bundlePriceNum: 199000
 };
@@ -274,14 +274,14 @@ const FALLBACK_PRODUCTS = [
     categories: ['PHP', 'Web App', 'Source Code'],
     price: 'Rp 59.000',
     oldPrice: 'Rp 129.000',
-    paymentUrl: 'https://mayar.id/pl/absensi-qrcode-php',
-    demoUrl: 'https://demo-absensi.example.com',
-    postUrl: '#',
+    paymentUrl: '',
+    demoUrl: 'demo/absensi/',
+    postUrl: 'https://asetkode.blogspot.com/2026/11/source-code-sistem-absensi-siswa.html',
     version: 'v2.1 (Terbaru)',
-    stack: 'PHP Native + MySQL + HTML5 QR Code Scanner',
+    stack: 'HTML5 + JS + PHP/Web QR (Zero-Config Demo)',
     license: 'Personal & Komersial',
-    openMode: 'popup',
-    demoType: 'pos',
+    openMode: 'modal',
+    demoType: 'live_frame',
     thumbnailUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
     summary: 'Aplikasi absensi praktis dan instan tanpa alat fingerprint mahal. Pengguna cukup scan QR Code dinamis menggunakan kamera smartphone untuk mencatat kehadiran.',
     features: [
